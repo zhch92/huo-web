@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+        'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.PaymentRecordDao">
+
+	<insert id="insert" parameterType="com.friday.hgj.model.PaymentRecord" useGeneratedKeys="true" keyProperty="id" >
+		insert into payment_record (accountId, userId, orderSerialNo,bank, province, city, cardNo, amount, mobile, `status`, returnCode, returnMsg, operateTime, operateId, lastUpdateTime)
+		values (#{accountId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{orderSerialNo,jdbcType=VARCHAR}, #{bank,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, #{amount,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{returnCode,jdbcType=VARCHAR}, #{returnMsg,jdbcType=VARCHAR}, #{operateTime,jdbcType=TIMESTAMP}, #{operateId,jdbcType=BIGINT}, #{lastUpdateTime,jdbcType=TIMESTAMP})
+	</insert>
+
+    <sql id="forPage">
+        <where> 
+            status!=-1
+            <if test="status!=0 and status!=null and status!='' ">
+                and status=#{status}
+            </if>
+            <if test="startTime!=null and startTime!='' ">
+            	<![CDATA[
+                	and lastUpdateTime>=#{startTime}
+                ]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+            	<![CDATA[ 
+                	and date_format(lastUpdateTime,'%Y-%m-%d')<=#{endTime}
+                ]]>
+            </if>
+        </where>
+    </sql>
+
+    <select id="getPaymentRecordSum" resultType="java.lang.Long">
+        select count(*) from payment_record
+        <include refid="forPage"/>
+    </select>
+
+    <select id="listByPage" parameterType="map" resultType="com.friday.hgj.model.PaymentRecord">
+        select * from payment_record
+        <include refid="forPage"/>
+        order by id desc
+        limit #{start},#{pageSize}
+    </select>
+</mapper>

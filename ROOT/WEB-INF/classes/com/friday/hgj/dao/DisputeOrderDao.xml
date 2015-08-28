@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.DisputeOrderDao">
+
+	<sql id="mainSql">
+		id,orderId,driverUserId,shipperUserId,status,disputeDetaiId,operateId,lastOperateTime,operateTime,operateId,arbitrament
+	</sql>
+	
+	<insert id="insert" parameterType="DisputeOrder" useGeneratedKeys="true" keyProperty="id">
+		insert into dispute_order(orderId,driverUserId,shipperUserId,status,disputeDetaiId,
+		lastOperateTime,operateTime,operateId,arbitrament) 
+		values(#{orderId},#{driverUserId},#{shipperUserId},#{status},#{disputeDetaiId},
+		#{lastOperateTime},now(),#{operateId},#{arbitrament})
+	</insert>
+	
+	<update id="updateStatusById" parameterType="DisputeOrder">
+		update dispute_order
+		<set>
+			
+			<if test="disputeDetaiId != null">
+				disputeDetaiId = #{disputeDetaiId},
+			</if>
+			<if test="lastOperateTime != null">
+				lastOperateTime = now(),
+			</if>
+			<if test="arbitrament != null">
+				arbitrament = #{arbitrament},
+			</if>
+			status = #{status}
+		</set>
+		where id = #{id}
+	</update>
+	
+	
+	<select id="getDisputeOrderByOrderIdAndStatus" parameterType="DisputeOrder" resultType="DisputeOrder">
+		select <include refid="mainSql"/> from dispute_order where orderId = #{orderId}
+			<if test="status != null">
+				and status = #{status}
+			</if>
+	</select>
+	
+	<select id="getDisputeOrderByOrderIdAnduserId" parameterType="DisputeOrder" resultType="DisputeOrder">
+		select <include refid="mainSql"/> from dispute_order where orderId = #{orderId}
+			<if test="driverUserId != null and ''!=driverUserId">
+				and driverUserId = #{driverUserId}
+			</if>
+			<if test="shipperUserId != null and ''shipperUserId">
+				and shipperUserId = #{shipperUserId}
+			</if>
+	</select>
+	
+	<select id="getDisputeOrderByOrderId" parameterType="long" resultType="DisputeOrder">
+		select <include refid="mainSql"/> from dispute_order where orderId = #{orderId}
+	</select>
+	
+	<select id="getDisputeOrderByOrderIdAndDriverUserId" parameterType="DisputeOrder" resultType="DisputeOrder">
+		select <include refid="mainSql"/> from dispute_order where orderId = #{orderId} and driverUserId = #{driverUserId}
+	</select>
+	
+</mapper>

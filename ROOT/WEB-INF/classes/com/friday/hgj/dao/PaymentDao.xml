@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.PaymentDao">
+	
+	<select id="selectDataPaymentByOrders" parameterType="map" resultType="PaymentInfo">
+	
+		select 
+		t.id id,t.orderNo orderNo,t.createTime createTime,t.shipperUserId shipperUserId,t.applyArrivalTime,t.confirmReceiveTime,t.city,t.arrivalCity,t.count,
+		t.square,t.weight,t.money,t.ensureTradeTime,t.sendTime,
+		t.appliUserId appliUserId,t.`status` `status`,t.dispute dispute,t.isInvoice isInvoice,d.driverName driverName,c.companyName companyName,t.dispute dispute 
+		from orders t,driver d,company_info c
+		where
+		 	t.appliUserId = d.userId and t.shipperUserId = c.userId and (t.status=100 or t.status=101)
+            <if test="orderNo != null and ''!=orderNo" >
+			    and orderNo like concat('%', #{orderNo}, '%')
+			</if>
+			<if test="dispute != null and ''!=dispute" >
+			    and dispute = #{dispute}
+			</if>
+			<if test="dispute == null or ''==dispute" >
+				<if test="status != null and status == 35" >
+				   and (ifNull(dispute,0) = 0 or dispute = 3)
+				</if>
+			</if>
+			<if test="status != null and status != 0" >
+			   and status = #{status}
+			</if>
+			<if test="startAdd != null and ''!=startAdd" >
+			  and startAdd = #{startAdd}
+			</if>
+			<if test="companyName != null and ''!=companyName" >
+			  and c.companyName like concat('%', #{companyName}, '%')
+			</if>
+			<if test="driverName != null and ''!=driverName" >
+			  and d.driverName like concat('%', #{driverName}, '%')
+			</if>
+			<if test="arrivalAdd != null and ''!=arrivalAdd" >
+			  and arrivalAdd = #{arrivalAdd}
+			</if>
+			<if test="startTime != null and ''!=startTime" >
+			  and createTime &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and ''!=endTime" >
+			  and createTime &lt;date_add(#{endTime}, interval 1 day)
+			</if>
+		order by t.createTime desc
+		limit #{start},#{pageSize}
+	</select>
+	
+	<select id="selectCountPaymentByOrders" parameterType="map" resultType="integer">
+		select count(*) from 
+		orders t,driver d,company_info c
+		where
+		 	t.appliUserId = d.userId and t.shipperUserId = c.userId  and (t.status=100 or t.status=101)
+           <if test="orderNo != null and ''!=orderNo" >
+			    and orderNo like concat('%', #{orderNo}, '%')
+			</if>
+			<if test="dispute != null and ''!=dispute" >
+			    and dispute = #{dispute}
+			</if>
+			<if test="status != null and status != 0" >
+			   and status = #{status}
+			</if>
+			<if test="startAdd != null and ''!=startAdd" >
+			  and startAdd = #{startAdd}
+			</if>
+			<if test="companyName != null and ''!=companyName" >
+			  and c.companyName like concat('%', #{companyName}, '%')
+			</if>
+			<if test="driverName != null and ''!=driverName" >
+			  and d.driverName like concat('%', #{driverName}, '%')
+			</if>
+			<if test="arrivalAdd != null and ''!=arrivalAdd" >
+			  and arrivalAdd = #{arrivalAdd}
+			</if>
+			<if test="startTime != null and ''!=startTime" >
+			  and createTime &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and ''!=endTime" >
+			  and createTime &lt;date_add(#{endTime}, interval 1 day)
+			</if>
+	</select>
+</mapper>

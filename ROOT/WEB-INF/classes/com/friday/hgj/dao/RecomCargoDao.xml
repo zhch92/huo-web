@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.RecomCargoDao">
+     <insert id="insert" parameterType="com.friday.hgj.model.RecomCargo" useGeneratedKeys="true" keyProperty="id">
+		insert into recomcargo(userId,isView,todealTime,todealId,cargoId) 
+		values(#{userId},#{isView},#{todealTime},#{todealId},#{cargoId})
+	</insert>
+
+	
+</mapper>

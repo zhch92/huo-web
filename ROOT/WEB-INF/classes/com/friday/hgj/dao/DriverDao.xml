@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.DriverDao">
+	
+	<insert id="insertFirst" parameterType="Driver" useGeneratedKeys="true" keyProperty="id">
+		insert into driver(userId,mobile,integral,operateTime) 
+		values(#{userId},#{mobile},#{integral},#{operateTime})
+	</insert>
+	
+	<update id="updateDriverInfo" parameterType="Driver">
+		update driver
+		<set>
+			<if test="carNumber != null &amp;&amp; carNumber != ''">
+				carNumber = #{carNumber},
+			</if>
+			<if test="driverName != null &amp;&amp; driverName != ''">
+				driverName = #{driverName},
+			</if>
+			<if test="sex != 0">
+				sex = #{sex},
+			</if>
+			<if test="carLength != 0.0">
+				carLength = #{carLength},
+			</if>
+			<if test="carType != 0">
+				carType = #{carType},
+			</if>
+			<if test="operateTime != null">
+				operateTime = #{operateTime},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateDriverBankCard" parameterType="Driver">
+		update driver
+		<set>
+			<if test="yhkh != null &amp;&amp; yhkh != ''">
+				yhkh = #{yhkh},
+			</if>
+			<if test="yhkyhm != null &amp;&amp; yhkyhm != ''">
+				yhkyhm = #{yhkyhm},
+			</if>
+			<if test="khyh != null &amp;&amp; khyh != ''">
+				khyh = #{khyh},
+			</if>
+			<if test="khyhdz != null &amp;&amp; khyhdz != ''">
+				khyhdz = #{khyhdz},
+			</if>
+			<if test="operateTime != null">
+				operateTime = #{operateTime},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateDriverCertificate" parameterType="Driver">
+		update driver
+		<set>
+			<if test="sfzhm != null &amp;&amp; sfzhm != ''">
+				sfzhm = #{sfzhm},
+			</if>
+			<if test="sfzzp != null &amp;&amp; sfzzp != ''">
+				sfzzp = #{sfzzp},
+			</if>
+			<if test="xszhm != null &amp;&amp; xszhm != ''">
+				xszhm = #{xszhm},
+			</if>
+			<if test="xszzb != null &amp;&amp; xszzb != ''">
+				xszzb = #{xszzb},
+			</if>
+			<if test="jszhm != null &amp;&amp; jszhm != ''">
+				jszhm = #{jszhm},
+			</if>
+			<if test="jszzb != null &amp;&amp; jszzb != ''">
+				jszzb = #{jszzb},
+			</if>
+			<if test="operateTime != null">
+				operateTime = #{operateTime},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	
+	<update id="moblieUpdateDriverInfoAndBack" parameterType="Driver">
+		update driver
+		<set>
+			<if test="driverName != null &amp;&amp; driverName != ''">
+				driverName = #{driverName},
+			</if>
+			<if test="sex != 0">
+				sex = #{sex},
+			</if>
+			<if test="carLength != 0.0">
+				carLength = #{carLength},
+			</if>
+			<if test="carType != 0">
+				carType = #{carType},
+			</if>
+			<if test="yhkh != null &amp;&amp; yhkh != ''">
+				yhkh = #{yhkh},
+			</if>
+			<if test="yhkyhm != null &amp;&amp; yhkyhm != ''">
+				yhkyhm = #{yhkyhm},
+			</if>
+			<if test="khyh != null &amp;&amp; khyh != ''">
+				khyh = #{khyh},
+			</if>
+			<if test="operateTime != null">
+				operateTime = #{operateTime},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+</mapper>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.CompanyInfoDao">
+	<insert id="insertFirst" parameterType="CompanyInfo" useGeneratedKeys="true" keyProperty="id">
+		insert into company_info(userId,linkMobile,operateTime) 
+		values(#{userId},#{linkMobile},#{operateTime})
+	</insert>
+	<update id="updateCompanyInfo" parameterType="com.friday.hgj.model.CompanyInfo" >
+		update company_info 
+			<set>
+			<if test="companyInfo.companyName != null">
+				companyName = #{companyInfo.companyName},
+			</if>
+			<if test="companyInfo.companyAdd != null">
+				companyAdd = #{companyInfo.companyAdd},
+			</if>
+			<if test=" companyInfo.companyType != 0">
+				companyType = #{companyInfo.companyType},
+			</if>
+			<if test=" companyInfo.industryType != 0">
+				industryType = #{companyInfo.industryType},
+			</if>
+			<if test="companyInfo.linkName != null">
+				linkName=#{companyInfo.linkName},
+			</if>
+			<if test="companyInfo.linkPhone != null">
+				linkPhone=#{companyInfo.linkPhone},
+			</if>
+			<if test="companyInfo.linkMobile != null">
+				linkMobile=#{companyInfo.linkMobile},
+			</if>			
+			<if test="companyInfo.yyzzhm != null">
+				yyzzhm=#{companyInfo.yyzzhm},
+			</if>
+			<if test="companyInfo.yyzzsfrz != 0">
+				yyzzsfrz=#{companyInfo.yyzzsfrz},
+			</if>
+			<if test="companyInfo.zzjgdm != null">
+				zzjgdm=#{companyInfo.zzjgdm},
+			</if>
+			<if test="companyInfo.zzjgdmsfrz != 0">
+				zzjgdmsfrz=#{companyInfo.zzjgdmsfrz},
+			</if>
+			<if test="companyInfo.payMobile != null">
+				payMobile=#{companyInfo.payMobile},
+			</if>
+			<if test="companyInfo.payName != null">
+				payName=#{companyInfo.payName},
+			</if>
+			
+			<if test="companyInfo.alarmValue > -1">
+				alarmValue=#{companyInfo.alarmValue},
+			</if>
+			<if test="companyInfo.yyzzfb != null">
+				yyzzfb=#{companyInfo.yyzzfb},
+			</if>
+			<if test="companyInfo.integral >-1">
+				integral=#{companyInfo.integral},
+			</if>
+			<if test="companyInfo.email != null">
+				email=#{companyInfo.email},
+			</if>
+			<if test="companyInfo.alarmPhone != null">
+				alarmPhone=#{companyInfo.alarmPhone},
+			</if>
+			
+			<if test="companyInfo.operateTime != null">
+				operateTime = #{companyInfo.operateTime},
+			</if>
+		</set>
+		 where id=#{companyInfo.id} 
+	</update>
+	<update id="updateCompanyInfoSafe" parameterType="com.friday.hgj.model.CompanyInfo" >
+		update company_info 
+			<set>
+			<if test="email != null">
+				email = #{email},
+			</if>
+			<if test="payName != null">
+				payName = #{payName},
+			</if>
+			<if test="payMobile != null">
+				payMobile = #{payMobile},
+			</if>
+			<if test="alarmValue != 0">
+				alarmValue=#{alarmValue},
+			</if>
+			<if test="alarmPhone != null">
+				alarmPhone=#{alarmPhone},
+			</if>
+			<if test="operateTime != null">
+				operateTime = #{operateTime},
+			</if>
+		</set>
+		 where id=#{id} 
+	</update>
+	<update id="updateCompanyInfoZgrz" parameterType="com.friday.hgj.model.CompanyInfo" >
+		update company_info 
+			<set>
+			<if test="yyzzhm != null">
+				yyzzhm = #{yyzzhm},
+			</if>
+			<if test="yyzzzp != null">
+				yyzzzp = #{yyzzzp},
+			</if>
+			<if test="zzjgdm != null">
+				zzjgdm = #{zzjgdm},
+			</if>
+			<if test="zzjgdmzp != null">
+				zzjgdmzp=#{zzjgdmzp},
+			</if>
+			<if test="operateTime != null">
+				operateTime = #{operateTime},
+			</if>
+		</set>
+		 where id=#{id} 
+	</update>
+	<select id="selectcompByNamePhone" parameterType="map" resultType="com.friday.hgj.model.CompanyInfo">
+	
+       SELECT * from company_info
+        <where>
+            1=1
+            <if test="null != userName  and userName != ''">
+                and companyName=#{userName}
+            </if>
+            <if test="phone!=null  and  phone != ''">
+			    and linkMobile=#{phone}
+            </if>
+        </where>
+        limit 1
+    </select>
+</mapper>

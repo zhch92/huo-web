@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+        'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.UserDao">
+
+    <sql id="forPage">
+        <where>
+            <if test="null != username and username != ''">
+                and (c.companyName like CONCAT('%',#{username},'%') or d.driverName like CONCAT('%',#{username},'%') or e.companyName like CONCAT('%',#{username},'%'))
+            </if>
+            <if test="null != usertype and usertype > 0">
+                and a.usertype=#{usertype}
+            </if>
+            <if test="null != tel  &amp;&amp; tel != ''">
+				and a.userName like CONCAT('%',#{tel},'%')
+            </if>
+            <if test="authstatus ==0">
+                and (((c.yyzzsfrz=0 or c.yyzzsfrz is NULL) and (c.zzjgdmsfrz=0 or c.zzjgdmsfrz is NULL)) and ((d.sfzsfrz=0 or d.sfzsfrz is NULL) and (d.jszsfrz=0 or  d.jszsfrz is NULL ) and (d.xszsfrz=0 or d.xszsfrz is NULL)) and ((e.yyzzsfrz=0 or e.yyzzsfrz is NULL ) and (e.zzjgdmsfrz=0 or e.zzjgdmsfrz is null)))
+            </if>
+            <if test="authstatus ==1">
+                and (c.yyzzsfrz=1 or c.zzjgdmsfrz=1 or d.sfzsfrz=1  or d.jszsfrz=1 or d.xszsfrz=1 or e.yyzzsfrz=1 or e.zzjgdmsfrz=1)
+            </if>
+            <if test="authstatus ==2">
+                and ((c.yyzzhm!='' and c.yyzzsfrz=10 and c.zzjgdmsfrz=2) or (e.yyzzhm!='' and e.yyzzsfrz=10 and e.zzjgdmsfrz=2) or (e.zzjgdm!='' and e.yyzzsfrz=10 and e.yyzzsfrz=2) or (c.zzjgdm!='' and c.yyzzsfrz=10 and c.yyzzsfrz=2) or (d.xszhm!='' and d.xszsfrz=10 and d.jszhm!='' and d.jszsfrz=10 and d.sfzsfrz=2) or (d.xszhm!='' and d.xszsfrz=10 and d.sfzhm!='' and d.sfzsfrz=10 and d.jszsfrz=2) or (d.jszhm!='' and d.xszsfrz=2 and d.sfzhm!='' and d.sfzsfrz=10 and d.jszsfrz=10))
+            </if>
+            <if test="authstatus ==10">
+                and ((c.yyzzhm!='' and c.yyzzsfrz=10 and c.zzjgdm!='' and c.zzjgdmsfrz=10 ) or (d.sfzhm!='' and d.sfzsfrz=10 and d.jszhm!='' and d.jszsfrz=10 and d.xszsfrz=10 and d.xszhm!='') or (e.yyzzhm!='' and e.yyzzsfrz=10 and e.zzjgdm!='' and e.zzjgdmsfrz=10))
+            </if>
+        </where>
+    </sql>
+
+    <select id="getUserById" resultType="com.friday.hgj.model.User">
+           select * from user where id = #{uid}
+    </select>
+
+    <select id="getUserSum" resultType="java.lang.Long">
+      select count(*) from(SELECT * from user where id in (SELECT userId from  driver where ifNull(sfzsfrz,0)!=10 or ifNull(xszsfrz,0)!=10 or ifNull(jszsfrz,0)!=10)
+union
+SELECT * from user where id in (SELECT userId from  company_info where ifNull(yyzzsfrz,0)!=10 ))as tt
+        <include refid="forPage"/>
+    </select>
+    
+        <select id="getUserManagementSum" resultType="java.lang.Long">
+        select count(*) from driver 
+        <where>
+             sfzsfrz=10 and jszsfrz=10 and xszsfrz=10
+            <if test="null != tel  &amp;&amp; tel != ''">
+				and mobile like CONCAT('%',#{tel},'%')
+            </if>
+        </where>
+    </select>
+      <select id="getUserManagementCompSum" resultType="java.lang.Long">
+        select count(*) from company_info 
+        <where>
+             yyzzsfrz=10
+            <if test="null != tel  &amp;&amp; tel != ''">
+				and linkMobile like CONCAT('%',#{tel},'%')
+            </if>
+        </where>
+    </select>
+  <select id="getUserManagement" parameterType="map" resultType="com.friday.hgj.model.Driver">
+        select * from driver 
+        <where>
+             sfzsfrz=10 and jszsfrz=10 and xszsfrz=10
+            <if test="null != tel  &amp;&amp; tel != ''">
+				and mobile like CONCAT('%',#{tel},'%')
+            </if>
+        </where>
+        order by id desc
+        limit #{start},#{pageSize}
+    </select>
+     <select id="getUserManagementComp" parameterType="map" resultType="com.friday.hgj.model.CompanyInfo">
+        select * from company_info 
+        <where>
+               yyzzsfrz=10
+            <if test="null != tel  &amp;&amp; tel != ''">
+				and linkMobile like CONCAT('%',#{tel},'%')
+            </if>
+        </where>
+        order by id desc
+        limit #{start},#{pageSize}
+    </select>
+    
+
+    <select id="listByPage" parameterType="map" resultType="com.friday.hgj.model.User">
+       <!--  select a.* from
+			(select u.*from user u) as a
+		LEFT JOIN company_info c on a.id = c.userId  and c.yyzzsfrz!=10 
+		LEFT JOIN driver d on a.id = d.userId and d.sfzsfrz!=10 and d.jszsfrz!=10 and d.xszsfrz!=10
+		LEFT JOIN special_company e on a.id = e.userId -->
+		SELECT * from user where id in (SELECT userId from  driver where ifNull(sfzsfrz,0)!=10 or ifNull(xszsfrz,0)!=10 or ifNull(jszsfrz,0)!=10)
+union
+SELECT * from user where id in (SELECT userId from  company_info where ifNull(yyzzsfrz,0)!=10 )
+        <include refid="forPage"/>
+        order by operateTime desc
+        limit #{start},#{pageSize}
+    </select>
+</mapper>

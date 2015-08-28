@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+        'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.SpecialCompanyDao" >
+	<update id="updateSpecialCompany" parameterType="com.friday.hgj.model.SpecialCompany" >
+		update special_company 
+			<set>
+			<if test="specialCompany.companyName != null">
+				companyName = #{specialCompany.companyName},
+			</if>
+			<if test="specialCompany.companyAdd != null">
+				companyAdd = #{specialCompany.companyAdd},
+			</if>
+			<if test="specialCompany.companyType != 0">
+				companyType = #{specialCompany.companyType},
+			</if>
+			<if test="specialCompany.linkName != null">
+				linkName=#{specialCompany.linkName},
+			</if>
+			<if test="specialCompany.linkPhone != null">
+				linkPhone=#{specialCompany.linkPhone},
+			</if>
+			<if test="specialCompany.linkMobile != null">
+				linkMobile=#{specialCompany.linkMobile},
+			</if>
+			<if test="specialCompany.operateTime != null">
+				operateTime = #{specialCompany.operateTime},
+			</if>
+		</set>
+		 where id=#{specialCompany.id} 
+	</update>
+    <update id="updateSpecialCompanyZgrz" parameterType="com.friday.hgj.model.SpecialCompany" >
+		update special_company 
+			<set>
+			<if test="yyzzhm != null">
+				yyzzhm = #{yyzzhm},
+			</if>
+			<if test="yyzzzp != null">
+				yyzzzp = #{yyzzzp},
+			</if>
+			<if test="zzjgdm != null">
+				zzjgdm = #{zzjgdm},
+			</if>
+			<if test="zzjgdmzp != null">
+				zzjgdmzp=#{zzjgdmzp},
+			</if>
+			<if test="operateTime != null">
+				operateTime = #{operateTime},
+			</if>
+		</set>
+		 where id=#{id} 
+	</update>
+	<update id="updateSpecialCompanySafe" parameterType="com.friday.hgj.model.SpecialCompany" >
+		update special_company 
+			<set>
+			<if test="email != null">
+				email = #{email},
+			</if>
+			<if test="payName != null">
+				payName = #{payName},
+			</if>
+			<if test="payMobile != null">
+				payMobile = #{payMobile},
+			</if>
+			<if test="alarmValue != 0">
+				alarmValue=#{alarmValue},
+			</if>
+			<if test="alarmPhone != null">
+				alarmPhone=#{alarmPhone},
+			</if>
+			<if test="operateTime != null">
+				operateTime = #{operateTime},
+			</if>
+		</set>
+		 where id=#{id} 
+	</update>
+  
+</mapper>

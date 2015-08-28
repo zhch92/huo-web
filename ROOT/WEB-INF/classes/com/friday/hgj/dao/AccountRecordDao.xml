@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+        'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.AccountRecordDao">
+
+	<insert id="insert" parameterType="com.friday.hgj.model.AccountRecord" useGeneratedKeys="true" keyProperty="id">
+		insert into account_record (accountId, creditId, debitId, orderId, payRecordId, operateType, money, remark, status, operateTime, operateId, operateName, operateIp)
+	    values (#{accountId}, #{creditId}, #{debitId}, #{orderId}, #{payRecordId}, #{operateType}, #{money}, 
+	      #{remark}, #{status}, #{operateTime}, #{operateId}, #{operateName}, #{operateIp})
+	</insert>
+
+
+    <sql id="forPage">
+        <where> 
+            a.operateType=2 and a.status!=-1 
+            <if test="userId!=0 and userId!=null and userId!='' ">
+                and a.creditId=#{userId} or a.debitId=#{userId}
+            </if>
+            <if test="null != username and username != ''">
+                and (e.companyName like CONCAT('%',#{username},'%') or f.driverName like CONCAT('%',#{username},'%') )
+            </if>
+            <if test="null != usertype and usertype > 0">
+                and d.usertype=#{usertype}
+            </if>
+            <if test="null != mobile  &amp;&amp; mobile != ''">
+				and (e.linkMobile like CONCAT('%',#{mobile},'%') or f.mobile like CONCAT('%',#{mobile},'%') )
+            </if>
+            <if test="status!=0 and status!=null and status!='' ">
+                and a.status=#{status}
+            </if>
+            <if test="status!=0 or status==null or status=='' ">
+                <![CDATA[
+                	and (a.status=6 or a.status=10 or a.status=16)
+                ]]>
+            </if>
+            <if test="operateType!=0 and operateType!=null and operateType!=''">
+                and a.operateType=#{operateType}
+            </if>
+            <if test="startTime!=null and startTime!='' ">
+            	<![CDATA[
+                	and a.operateTime>=#{startTime}
+                ]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+            	<![CDATA[ 
+                	and date_format(a.operateTime,'%Y-%m-%d')<=#{endTime}
+                ]]>
+            </if>
+        </where>
+    </sql>
+
+    <select id="getAccountRecordSum" parameterType="map" resultType="java.lang.Long">
+        select count(1)
+			FROM account_record a
+			LEFT JOIN payment_record b on a.payRecordId=b.id
+			LEFT JOIN account c ON a.accountId=c.accountId
+			LEFT JOIN `user` d ON c.userId=d.id
+			LEFT JOIN company_info e ON d.id = e.userId
+			LEFT JOIN driver f ON d.id = f.userId
+			LEFT JOIN orders o ON a.orderId = o.id
+        <include refid="forPage"/>
+    </select>
+
+    <select id="listByPage" parameterType="map" resultType="com.friday.hgj.model.AccountRecord">
+        select a.*,c.usable,d.usertype,d.userName,e.companyName,e.linkMobile,
+        		f.driverName,f.mobile,o.orderNo 
+        	FROM account_record a
+			LEFT JOIN payment_record b on a.payRecordId=b.id
+			LEFT JOIN account c ON a.accountId=c.accountId
+			LEFT JOIN `user` d ON c.userId=d.id
+			LEFT JOIN company_info e ON d.id = e.userId
+			LEFT JOIN driver f ON d.id = f.userId
+			LEFT JOIN orders o ON a.orderId = o.id
+        <include refid="forPage"/>
+        order by a.id desc
+        limit #{start},#{pageSize}
+    </select>
+    
+    
+    <sql id="forPage4Pay">
+        <where> 
+            a.payRecordId = b.id and a.status!=-1 and a.operateType=2
+            <if test="status!=0 and status!=null and status!='' ">
+                and b.status=#{status}
+            </if>
+            <if test="status==0 or status==null or status=='' ">
+            	<![CDATA[
+                and (b.status=10 or b.status=16)
+                ]]>
+            </if>
+            <if test="startTime!=null and startTime!='' ">
+            	<![CDATA[
+                	and b.lastUpdateTime>=#{startTime}
+                ]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+            	<![CDATA[ 
+                	and date_format(b.lastUpdateTime,'%Y-%m-%d')<=#{endTime}
+                ]]>
+            </if>
+        </where>
+    </sql>
+
+    <select id="getAccountRecordSum4Pay"  resultType="java.lang.Long">
+        select count(1)
+			FROM account_record a
+			LEFT JOIN payment_record b on a.payRecordId=b.id
+			LEFT JOIN account c ON a.accountId=c.accountId
+			LEFT JOIN `user` d ON c.userId=d.id
+			LEFT JOIN company_info e ON d.id = e.userId
+			LEFT JOIN driver f ON d.id = f.userId
+			LEFT JOIN orders o ON a.orderId = o.id
+        <include refid="forPage4Pay"/>
+    </select>
+
+    <select id="listByPage4Pay" parameterType="map" resultType="com.friday.hgj.model.AccountRecord">
+        select a.*,c.usable,c.total,c.frozen,d.usertype,d.userName,e.companyName,e.linkMobile,
+        		f.driverName,f.mobile,o.orderNo 
+        	FROM account_record a
+			LEFT JOIN payment_record b on a.payRecordId=b.id
+			LEFT JOIN account c ON a.accountId=c.accountId
+			LEFT JOIN `user` d ON c.userId=d.id
+			LEFT JOIN company_info e ON d.id = e.userId
+			LEFT JOIN driver f ON d.id = f.userId
+			LEFT JOIN orders o ON a.orderId = o.id
+        <include refid="forPage4Pay"/>
+        order by b.lastUpdateTime desc
+        limit #{start},#{pageSize}
+    </select>
+    
+    
+    
+    
+    <sql id="forPage4Total">
+        <where>
+        	<![CDATA[
+        		 ar.status!=-1 and o.status>5 and o.status<100
+			]]>
+			<if test="operateType!=0 and operateType!=null and operateType!=''">
+                and operateType=#{operateType}
+            </if>
+            <if test="usertype != 0 and usertype != null and usertype != '' " >
+				and u.usertype = #{usertype} 
+			</if>
+		</where>
+    </sql>
+    <sql id="forPage4TotalBalance">
+        <where>
+			<if test="usertype != 0 and usertype != null and usertype != '' " >
+				and u.usertype = #{usertype} 
+			</if>
+		</where>
+    </sql>
+    <sql id="forPage4OnOrder">
+        <where>
+        	<![CDATA[
+			ar.status!=-1 and ar.orderId>0
+			]]>
+			and o.status=#{onOrderStatus}
+			<if test="usertype != 0 and usertype != null and usertype != '' " >
+				and u.usertype = #{usertype} 
+			</if>
+		</where>
+    </sql>
+    <sql id="selectForPage4Total">
+		<if test="operateType!=11 and operateType!=20 and operateType!=33">
+			SELECT ar.id,ar.operateType,ar.money,u.id as userId,
+					u.userName,u.usertype,d.driverName,com.companyName,o.orderNo 
+				FROM account_record ar 
+				LEFT JOIN account ac ON ar.accountId=ac.accountId
+				LEFT JOIN `user` u ON ac.userId=u.id
+				LEFT JOIN driver d ON u.id = d.userId
+				LEFT JOIN company_info com ON u.id = com.userId
+				LEFT JOIN orders o ON ar.orderId = o.id
+				<include refid="forPage4Total"/>
+			<if test="operateType==0">
+				UNION 
+			</if>
+		</if>
+		<if test="operateType==0 or operateType==33">
+			SELECT ac.accountId as id,33 as operateType,
+				50000 as money,u.id as userId,
+				u.userName,u.usertype,d.driverName,com.companyName,1 as orderNo 
+				FROM account ac 
+				LEFT JOIN `user` u ON ac.userId=u.id
+				LEFT JOIN driver d ON u.id = d.userId
+				LEFT JOIN company_info com ON u.id = com.userId
+				where u.usertype=1 and ac.usable &gt;= 50000 
+			 UNION 
+			 SELECT ac.accountId as id,33 as operateType,
+				ac.usable as money,u.id as userId,
+				u.userName,u.usertype,d.driverName,com.companyName,1 as orderNo 
+				FROM account ac 
+				LEFT JOIN `user` u ON ac.userId=u.id
+				LEFT JOIN driver d ON u.id = d.userId
+				LEFT JOIN company_info com ON u.id = com.userId
+				where u.usertype=1 and ac.usable &lt; 50000 
+			<if test="operateType==0">
+				UNION
+			</if>
+		</if>
+		<if test="operateType==0 or operateType==20">
+			SELECT ar.id,20 as operateType,ar.money,u.id as userId,
+					u.userName,u.usertype,d.driverName,com.companyName,o.orderNo 
+				FROM account_record ar 
+				LEFT JOIN account ac ON ar.accountId=ac.accountId
+				LEFT JOIN `user` u ON ac.userId=u.id
+				LEFT JOIN driver d ON u.id = d.userId
+				LEFT JOIN company_info com ON u.id = com.userId
+				LEFT JOIN orders o ON ar.orderId = o.id
+				<include refid="forPage4OnOrder"/>
+			<if test="operateType==0">
+				UNION
+			</if>
+		</if>
+		<if test="operateType==0 or operateType==11">
+			SELECT ac.accountId as id,11 as operateType,
+					ac.total as money,u.id as userId,
+				u.userName,u.usertype,d.driverName,com.companyName,1 as orderNo 
+				FROM account ac 
+				LEFT JOIN `user` u ON ac.userId=u.id
+				LEFT JOIN driver d ON u.id = d.userId
+				LEFT JOIN company_info com ON u.id = com.userId
+				<include refid="forPage4TotalBalance"/>
+		</if>
+    </sql>
+    <sql id="select4SumTotal">
+		<if test="operateType!=11 and operateType!=20  and operateType!=33">
+			SELECT ar.money
+				FROM account_record ar 
+				LEFT JOIN account ac ON ar.accountId=ac.accountId
+				LEFT JOIN `user` u ON ac.userId=u.id
+				LEFT JOIN driver d ON u.id = d.userId
+				LEFT JOIN company_info com ON u.id = com.userId
+				LEFT JOIN orders o ON ar.orderId = o.id
+				<include refid="forPage4Total"/>
+			<if test="operateType==0">
+				UNION
+			</if>
+		</if>
+		<if test="operateType==0 or operateType==33">
+				SELECT 
+					(SELECT count(*)*50000 from account a,`user` b
+						where a.userId=b.id and b.usertype=1 and a.usable &gt;= 50000)+
+					(SELECT sum(a.usable) from account a,`user` b 
+						where a.userId=b.id and b.usertype=1 and a.usable &lt; 50000) as money 
+			<if test="operateType==0">
+			  UNION 
+			</if>
+		</if>
+		<if test="operateType==0 or operateType==20">
+			SELECT ar.money
+				FROM account_record ar 
+				LEFT JOIN account ac ON ar.accountId=ac.accountId
+				LEFT JOIN `user` u ON ac.userId=u.id
+				LEFT JOIN driver d ON u.id = d.userId
+				LEFT JOIN company_info com ON u.id = com.userId
+				LEFT JOIN orders o ON ar.orderId = o.id
+				<include refid="forPage4OnOrder"/>
+			<if test="operateType==0">
+				UNION
+			</if>
+		</if>
+		<if test="operateType==0 or operateType==11">
+			SELECT ac.total as money
+				FROM account ac 
+				LEFT JOIN `user` u ON ac.userId=u.id
+				LEFT JOIN driver d ON u.id = d.userId
+				LEFT JOIN company_info com ON u.id = com.userId
+				<include refid="forPage4TotalBalance"/>
+		</if>
+    </sql>
+    
+    
+    <select id="countByPage4Total" parameterType="map"  resultType="int" >		
+		SELECT count(id) from ( <include refid="selectForPage4Total"/> ) as ta	
+	</select>
+	<select id="listByPage4Total" parameterType="map" resultType="com.friday.hgj.model.AccountRecord" >
+		SELECT * from ( <include refid="selectForPage4Total"/> ) as ta
+		order by ta.id desc
+        limit #{start},#{pageSize}
+	</select>
+	<select id="sum4TotalAccountsByType" parameterType="map"  resultType="long" >
+		SELECT sum(money) from ( <include refid="select4SumTotal"/> ) as ta	
+	</select>
+	
+	
+	<sql id="forPage4OneUser">
+        <where>
+        	a.status!=-1 
+            <if test="userId!=0 and userId!=null and userId!='' ">
+                and (a.creditId=#{userId} or a.debitId=#{userId})
+            </if>
+            <if test="querysql!=null and querysql!='' ">
+                ${querysql}
+            </if>
+        </where>
+    </sql>
+
+    <select id="countAC4OneUser" parameterType="map" resultType="java.lang.Long">
+         select count(1)
+        	FROM account_record a
+			LEFT JOIN payment_record b on a.payRecordId=b.id
+			LEFT JOIN account c ON a.accountId=c.accountId
+			LEFT JOIN `user` d ON c.userId=d.id
+			LEFT JOIN company_info e ON d.id = e.userId
+			LEFT JOIN driver f ON d.id = f.userId
+			LEFT JOIN orders o ON a.orderId = o.id
+        <include refid="forPage4OneUser"/>
+    </select>
+
+    <select id="listByPage4OneUser" parameterType="map" resultType="com.friday.hgj.model.AccountRecord">
+        select a.*,c.usable,d.usertype,d.userName,e.companyName,e.linkMobile,
+        		f.driverName,f.mobile,o.orderNo,o.tradeTotal
+        	FROM account_record a
+			LEFT JOIN payment_record b on a.payRecordId=b.id
+			LEFT JOIN account c ON a.accountId=c.accountId
+			LEFT JOIN `user` d ON c.userId=d.id
+			LEFT JOIN company_info e ON d.id = e.userId
+			LEFT JOIN driver f ON d.id = f.userId
+			LEFT JOIN orders o ON a.orderId = o.id
+        <include refid="forPage4OneUser"/>
+        order by a.id desc
+        <if test="querysql!=null and querysql!='' ">
+             limit #{start},#{pageSize}
+        </if>
+    </select>
+    
+    
+    
+    <sql id="forPage4AccReport">
+        <where>
+            <if test="null != username and username != ''">
+                and (username like CONCAT('%',#{username},'%') or companyName like CONCAT('%',#{username},'%') or driverName like CONCAT('%',#{username},'%') )
+            </if>
+            <if test="null != usertype and usertype > 0">
+                and usertype=#{usertype}
+            </if>
+            <if test="querysql!=null and querysql!='' ">
+                ${querysql}
+            </if>
+        </where>
+    </sql>
+    <select id="countAccReportsSum" parameterType="map" resultType="java.lang.Long">
+        SELECT count(1) FROM 
+			(
+				SELECT rs1.*,ut.startTotalMoney,ut.endTotalMoney,ut.endUsableMoney FROM 
+					(SELECT ac.accountId,u.id as userId,
+										ac.usable,ac.total,u.userName,u.usertype,d.driverName,com.companyName,
+										sum(case when ar.creditId=u.id and ar.operateType=1 and ar.status=2 then ar.money else 0 end) as rechargeMoney,
+										sum(case when ar.debitId=u.id and ar.operateType not in(1,2,3) then ar.money else 0 end) as collectionMoney,
+										sum(case when ar.creditId=u.id and ar.operateType not in(1,2) then -ar.money else 0 end) as paymentMoney,
+										sum(case when ar.debitId=u.id and ar.operateType=2 then -ar.money else 0 end) as withdrawMoney
+							FROM account ac 
+							LEFT JOIN account_record ar ON ac.accountId=ar.accountId
+							LEFT JOIN `user` u ON ac.userId=u.id
+							LEFT JOIN driver d ON u.id = d.userId
+							LEFT JOIN company_info com ON u.id = com.userId
+					group by ac.accountId
+					order by ac.accountId desc
+			) rs1 
+				LEFT JOIN 
+					(
+						select a.accountId accountId,
+							(b.total-sum(case when (((a.operateType=1 and a.status=2 ) or (a.operateType=2 and a.status=16) or (a.operateType=3 and (e.status=100 or (e.status=-1 and c.status=1))) or (a.operateType!=1 and a.operateType!=2 and a.operateType!=3))) then a.money else 0 end)) startTotalMoney, 
+							(b.total-sum(case when (((a.operateType=1 and a.status=2 ) or (a.operateType=2 and a.status=16) or (a.operateType=3 and (e.status=100 or (e.status=-1 and c.status=1)))  or (a.operateType!=1 and a.operateType!=2 and a.operateType!=3) )) then a.money else 0 end)) endTotalMoney,
+							(b.usable-sum(case when (((a.operateType=1 and a.status=2 ) or (a.operateType!=1) or (a.operateType=2 and a.status!=51)  or (a.operateType!=1 and a.operateType!=2 and a.operateType!=3) )  ) then a.money else 0 end)) endUsableMoney
+							from account_record a
+							left join account b on a.accountId=b.accountId
+							left join default_info c  on a.orderId = c.orderId
+							left join orders e on a.orderId=e.id
+							group by a.accountId
+						) as ut ON rs1.accountId=ut.accountId
+					) rs2
+			<include refid="forPage4AccReport"/>
+    </select>
+	
+    <select id="listByPage4AccountReport" parameterType="map" resultType="com.friday.hgj.model.AccountRecord">
+       	SELECT * FROM 
+			(
+				SELECT rs1.*,ut.startTotalMoney,ut.endTotalMoney,ut.endUsableMoney FROM 
+					(SELECT ac.accountId,u.id as userId,
+										ac.usable,ac.total,u.userName,u.usertype,d.driverName,com.companyName,
+										sum(case when ar.creditId=u.id and ar.operateType=1 and ar.status=2 <if test="startTime!=null and startTime!='' "><![CDATA[and ar.operateTime>=#{startTime}]]></if><if test="endTime!=null and endTime!='' "><![CDATA[and ar.operateTime<=#{endTime}]]></if> then ar.money else 0 end) as rechargeMoney,
+										sum(case when ar.debitId=u.id and ar.operateType not in(1,2,3) <if test="startTime!=null and startTime!='' "><![CDATA[and ar.operateTime>=#{startTime}]]></if><if test="endTime!=null and endTime!='' "><![CDATA[and ar.operateTime<=#{endTime}]]></if> then ar.money else 0 end) as collectionMoney,
+										sum(case when ar.creditId=u.id and ar.operateType not in(1,2) <if test="startTime!=null and startTime!='' "><![CDATA[and ar.operateTime>=#{startTime}]]></if><if test="endTime!=null and endTime!='' "><![CDATA[and ar.operateTime<=#{endTime}]]></if> then -ar.money else 0 end) as paymentMoney,
+										sum(case when ar.debitId=u.id and ar.operateType=2 <if test="startTime!=null and startTime!='' "><![CDATA[and ar.operateTime>=#{startTime}]]></if><if test="endTime!=null and endTime!='' "><![CDATA[and ar.operateTime<=#{endTime}]]></if> then -ar.money else 0 end) as withdrawMoney
+							FROM account ac 
+							LEFT JOIN account_record ar ON ac.accountId=ar.accountId
+							LEFT JOIN `user` u ON ac.userId=u.id
+							LEFT JOIN driver d ON u.id = d.userId
+							LEFT JOIN company_info com ON u.id = com.userId
+					where ar.status!=-1 and ar.status!=51
+					group by ac.accountId
+					order by ac.accountId desc
+			) rs1 
+				LEFT JOIN 
+						(
+						select a.accountId accountId,
+							(b.total-sum(case when (( (a.operateType=1 and a.status=2 ) or (a.operateType=2 and a.status=16) or ( a.operateType=3 and ((o.status=100 and (dis.status is null or dis.status=3) ) or (o.`status`=-1 and def.`status`=1) ) ) or (a.operateType=4 and o.status=100) or (a.operateType not in(1,2,3,4)) ) <if test="startTime!=null and startTime!='' "><![CDATA[ and a.operateTime>#{startTime} ]]></if> ) then a.money else 0 end)) startTotalMoney, 
+							(b.total-sum(case when (( (a.operateType=1 and a.status=2 ) or (a.operateType=2 and a.status=16) or ( a.operateType=3 and ((o.status=100 and (dis.status is null or dis.status=3) ) or (o.`status`=-1 and def.`status`=1) ) ) or (a.operateType=4 and o.status=100) or (a.operateType not in(1,2,3,4)) )  <if test="endTime!=null and endTime!='' "><![CDATA[ and a.operateTime>#{endTime} ]]></if>) then a.money else 0 end)) endTotalMoney,
+							(b.usable-sum(case when (((a.operateType=1 and a.status=2 ) or (a.operateType!=1) or (a.operateType=2 and a.status!=51)  or (a.operateType!=1 and a.operateType!=2 and a.operateType!=3) ) <if test="endTime!=null and endTime!='' "><![CDATA[ and a.operateTime>#{endTime} ]]></if> ) then a.money else 0 end)) endUsableMoney
+							from account_record a
+							left join account b on a.accountId=b.accountId
+							left join orders o on a.orderId=o.id
+							left join dispute_order dis on a.orderId = dis.orderId
+							left join default_info def on a.orderId = def.orderId
+							where a.status!=-1
+							group by a.accountId
+						) as ut ON rs1.accountId=ut.accountId
+					) rs2
+		<include refid="forPage4AccReport"/>
+		limit #{start},#{pageSize}
+    </select>
+</mapper>

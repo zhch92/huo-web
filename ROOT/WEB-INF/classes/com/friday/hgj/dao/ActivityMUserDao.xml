@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.ActivityMUserDao">
+	
+	<insert id="insert" parameterType="ActivityMUser" useGeneratedKeys="true" keyProperty="id">
+		insert into activity_m_user(orderId,detainMoney,detainMoneyTime,status,userId) 
+		values(#{orderId},#{detainMoney},#{detainMoneyTime},#{status},#{userId})
+	</insert>
+	
+	 <select id="getActivityMUserSum" resultType="java.lang.Long">
+         SELECT COUNT(*) FROM ( select COUNT(*)  from  activity_m_user a, user u 
+	  <where>
+			a.userId=u.id 
+			<if test="userName!= null &amp;&amp; userName!= ''">
+				and u.userName=#{userName}
+			</if>
+	   </where>
+	  GROUP BY a.userId ) AA 
+    </select>
+    
+    
+    <select id="selectamuList" parameterType="java.util.Map" resultType="com.friday.hgj.model.ActivityMUser">
+
+	  select a.* ,COUNT(*) num from  activity_m_user a, user u 
+	  <where>
+			a.userId=u.id 
+			<if test="userName!= null &amp;&amp; userName!= ''">
+				and u.userName=#{userName}
+			</if>
+	   </where>
+	  GROUP BY a.userId order by a.id  asc limit #{start},#{pageSize}
+	</select>
+
+</mapper>

@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.OrdersDao">
+	
+	<insert id="insert" parameterType="Orders" useGeneratedKeys="true" keyProperty="id">
+		insert into orders(orderNo,cargoId,appliUserId,shipperUserId,carrierType,
+		money,count,total,status,createTime,
+		cargoNo,cargoName,weight,square,province,city,county,startAdd,linkName,linkPhone,
+		sendTime,arrivalTime,arrivalProvince,arrivalCity,arrivalCounty,arrivalAdd,
+		carLength,carType,quote,quoteCompany,packageType,attribute,remark,operateTime,confirmLose,isCargoDownShelve,chargeMode,ensureTradeTime,stateView,unitPrice,tradeNum,tradeTotal) 
+		values(#{orderNo},#{cargoId},#{appliUserId},#{shipperUserId},#{carrierType},
+		#{money},#{count},#{total},#{status},#{createTime},
+		#{cargoNo},#{cargoName},#{weight},#{square},#{province},#{city},#{county},#{startAdd},#{linkName},#{linkPhone},
+		#{sendTime},#{arrivalTime},#{arrivalProvince},#{arrivalCity},#{arrivalCounty},#{arrivalAdd},
+		#{carLength},#{carType},#{quote},#{quoteCompany},#{packageType},#{attribute},#{remark},#{operateTime},#{confirmLose}
+		,#{isCargoDownShelve},#{chargeMode},#{ensureTradeTime},#{stateView},#{unitPrice},#{tradeNum},#{tradeTotal})
+	</insert>
+	
+	<select id="getOrdersCountByApplyUserIdAndStatuses" resultType="int">
+		select count(*) from orders
+		<where>
+			appliUserId = #{appliUserId}
+			<if test="statuses !=null">
+				and status in
+				<foreach collection="statuses" item="statusItem" open="("
+					separator="," close=")">
+					#{statusItem}
+				</foreach>
+			</if>
+		</where>
+	</select>
+	
+	<select id="getDriverOnTradeCount" resultType="int">
+		select count(*) from orders
+		<where>
+			appliUserId = #{appliUserId} and cargoId = #{cargoId} 
+			<if test="noStatuses !=null">
+				and status not in
+				<foreach collection="noStatuses" item="statusItem" open="("
+					separator="," close=")">
+					#{statusItem}
+				</foreach>
+			</if>
+		</where>
+	</select>
+	  <select id="getDriverOdersByUid" parameterType="map" resultType="com.friday.hgj.model.Orders">
+	  select * from orders 
+        <where>
+            status!=-3
+            <if test="null != uid  &amp;&amp; uid != ''">
+				and appliUserId = #{uid}
+            </if>
+        </where>
+       order by createTime desc
+        limit #{start},#{pageSize}
+    </select>
+     <select id="getCompOdersByUid" parameterType="map" resultType="com.friday.hgj.model.Orders">
+	  select * from orders 
+        <where>
+            (status=100 or status=101)
+            <if test="null != uid  &amp;&amp; uid != ''">
+				and shipperUserId = #{uid}
+            </if>
+        </where>
+       order by createTime desc
+        limit #{start},#{pageSize}
+    </select>
+    
+	
+	<update id="cargoerUpdateOrders" parameterType="Orders">
+		update orders
+		<set>
+			<if test="unitPrice &gt; 0">
+				unitPrice = #{unitPrice},
+			</if>
+			<if test="tradeNum &gt; 0">
+				tradeNum = #{tradeNum},
+			</if>
+			<if test="tradeTotal &gt; 0">
+				tradeTotal = #{tradeTotal},
+			</if>
+			<if test="realSendTime != null">
+				realSendTime = #{realSendTime},
+			</if>
+			<if test="realTime != null">
+				realTime = #{realTime},
+			</if>
+			status = #{status}
+		</set>
+		where id = #{id}
+	</update>
+	
+	<select id="driverOrdersListTotal" resultType="int">
+		select count(*) from orders o left join cancel_order c_o on o.id = c_o.orderId
+		<where>
+			o.appliUserId = #{appliUserId}
+			and (o.status != -1 or (o.status = -1 and o.isShowList != -1))
+			<if test="statuses !=null">
+				and o.status in
+				<foreach collection="statuses" item="statusItem" open="("
+					separator="," close=")">
+					#{statusItem}
+				</foreach>
+			</if>
+			<if test="ordersQuery.city != null &amp;&amp; ordersQuery.city != ''">
+				and o.city = #{ordersQuery.city}
+			</if>
+			<if test="ordersQuery.arrivalCity != null &amp;&amp; ordersQuery.arrivalCity != ''">
+				and o.arrivalCity = #{ordersQuery.arrivalCity}
+			</if>
+		</where>
+	</select>
+	<select id="driverOrdersList" resultType="Orders">
+		select o.*,c_o.cancellCause,c_o.remark cancellRemark 
+		from orders o left join cancel_order c_o on o.id = c_o.orderId
+		<where>
+			o.appliUserId = #{appliUserId}
+			and (o.status != -1 or (o.status = -1 and o.isShowList != -1))
+			<if test="statuses !=null">
+				and o.status in
+				<foreach collection="statuses" item="statusItem" open="("
+					separator="," close=")">
+					#{statusItem}
+				</foreach>
+			</if>
+			<if test="ordersQuery.city != null &amp;&amp; ordersQuery.city != ''">
+				and o.city = #{ordersQuery.city}
+			</if>
+			<if test="ordersQuery.arrivalCity != null &amp;&amp; ordersQuery.arrivalCity != ''">
+				and o.arrivalCity = #{ordersQuery.arrivalCity}
+			</if>
+		</where>
+		order by id desc
+		limit #{start},#{size}
+	</select>
+	
+	<select id="cargoerOrdersListTotal" resultType="int">
+		select count(*) from orders o left join cancel_order c_o on o.id = c_o.orderId
+		<where>
+			o.shipperUserId = #{shipperUserId}
+			and o.status != 5 and o.status != -10
+			and (o.status != -1 or (o.status = -1 and o.isShowList != -1)) 
+			<if test="statuses !=null">
+				and o.status in
+				<foreach collection="statuses" item="statusItem" open="("
+					separator="," close=")">
+					#{statusItem}
+				</foreach>
+			</if>
+			<if test="ordersQuery.city != null &amp;&amp; ordersQuery.city != ''">
+				and o.city = #{ordersQuery.city}
+			</if>
+			<if test="ordersQuery.arrivalCity != null &amp;&amp; ordersQuery.arrivalCity != ''">
+				and o.arrivalCity = #{ordersQuery.arrivalCity}
+			</if>
+		</where>
+	</select>
+	<select id="cargoerOrdersList" resultType="Orders">
+		select o.*,c_o.cancellCause,c_o.remark cancellRemark
+		from orders o left join cancel_order c_o on o.id = c_o.orderId
+		<where>
+			o.shipperUserId = #{shipperUserId}
+			and o.status != 5 and o.status != -10
+			and (o.status != -1 or (o.status = -1 and o.isShowList != -1)) 
+			<if test="statuses !=null">
+				and o.status in
+				<foreach collection="statuses" item="statusItem" open="("
+					separator="," close=")">
+					#{statusItem}
+				</foreach>
+			</if>
+			<if test="ordersQuery.city != null &amp;&amp; ordersQuery.city != ''">
+				and o.city = #{ordersQuery.city}
+			</if>
+			<if test="ordersQuery.arrivalCity != null &amp;&amp; ordersQuery.arrivalCity != ''">
+				and o.arrivalCity = #{ordersQuery.arrivalCity}
+			</if>
+		</where>
+		order by id desc
+		limit #{start},#{size}
+	</select>
+
+	
+	<select id="selectOrders" resultType="Orders">
+		select * from orders
+		<where>
+			status != -1
+			<if test="orders.orderNo != null" >
+			    and orderNo = #{orders.orderNo}
+			</if>
+			<if test="orders.cargoId != 0" >
+			   and cargoId = #{orders.cargoId}
+			</if>
+			<if test="orders.orderCargoId != 0" >
+			   and orderCargoId = #{orders.orderCargoId}
+			</if>
+			<if test="orders.appliUserId != 0" >
+			   and appliUserId = #{orders.appliUserId}
+			</if>
+			<if test="orders.shipperUserId != 0" >
+			   and shipperUserId = #{orders.shipperUserId}
+			</if>
+			<if test="orders.carrierType != 0" >
+			   and carrierType = #{orders.carrierType}
+			</if>
+			<if test="orders.money != 0" >
+			   and money = #{orders.money}
+			</if>
+			<if test="orders.count != 0" >
+			   and count = #{orders.count}
+			</if>
+			<if test="orders.total != 0" >
+			   and total = #{orders.total}
+			</if>
+			<if test="orders.realTime != null" >
+			   and realTime = #{orders.realTime}
+			</if>
+			<if test="orders.confirmTime != null" >
+			   and confirmTime = #{orders.confirmTime}
+			</if>
+			<if test="orders.status != 0" >
+			   and status = #{orders.status}
+			</if>
+			<if test="orders.pictureIds != null" >
+			   and pictureIds = #{orders.pictureIds}
+			</if>
+			<if test="orders.compactIds != null" >
+			   and compactIds = #{orders.compactIds}
+			</if>
+			<if test="orders.operateTime != null" >
+			   and operateTime = #{orders.operateTime}
+			</if>
+			<if test="orders.operateId != 0" >
+			  and operateId = #{orders.operateId}
+			</if>
+			<if test="orders.cargoNo != null" >
+			  and cargoNo = #{orders.cargoNo}
+			</if>
+			<if test="orders.cargoName != null" >
+			  and cargoName = #{orders.cargoName}
+			</if>
+			<if test="orders.weight != 0" >
+			  and weight = #{orders.weight}
+			</if>
+			<if test="orders.square != 0" >
+			  and square = #{orders.square}
+			</if>
+			<if test="orders.province != 0" >
+			  and province = #{orders.province}
+			</if>
+			<if test="orders.city != 0" >
+			  and city = #{orders.city}
+			</if>
+			<if test="orders.county != 0" >
+			  and county = #{orders.county}
+			</if>
+			<if test="orders.startAdd != null" >
+			  and startAdd = #{orders.startAdd}
+			</if>
+			<if test="orders.linkName != null" >
+			  and linkName = #{orders.linkName}
+			</if>
+			<if test="orders.linkPhone != null" >
+			  and linkPhone = #{orders.linkPhone}
+			</if>
+			<if test="orders.sendTime != null" >
+			  and sendTime = #{orders.sendTime}
+			</if>
+			<if test="orders.arrivalTime != null" >
+			  and arrivalTime = #{orders.arrivalTime}
+			</if>
+			<if test="orders.arrivalProvince != 0" >
+			  and arrivalProvince = #{orders.arrivalProvince}
+			</if>
+			<if test="orders.arrivalCity != 0" >
+			  and arrivalCity = #{orders.arrivalCity}
+			</if>
+			<if test="orders.arrivalCounty != 0" >
+			  and arrivalCounty = #{orders.arrivalCounty}
+			</if>
+			<if test="orders.arrivalAdd != null" >
+			  and arrivalAdd = #{orders.arrivalAdd}
+			</if>
+			<if test="orders.carLength != 0" >
+			  and carLength = #{orders.carLength}
+			</if>
+			<if test="orders.carType != 0" >
+			  and carType = #{orders.carType}
+			</if>
+			<if test="orders.quote != 0" >
+			  and quote = #{orders.quote}
+			</if>
+			<if test="orders.quoteCompany != 0" >
+			  and quoteCompany = #{orders.quoteCompany}
+			</if>
+			<if test="orders.packageType != 0" >
+			  and packageType = #{orders.packageType}
+			</if>
+			<if test="orders.attribute != 0" >
+			  and attribute = #{orders.attribute}
+			</if>
+			<if test="orders.remark != null" >
+			  and remark = #{orders.remark}
+			</if>
+			<if test="orders.createTime != null" >
+			  and createTime = #{orders.createTime}
+			</if>
+			<if test="orders.unitPrice != 0" >
+			  and unitPrice = #{orders.unitPrice}
+			</if>
+			<if test="orders.tradeNum != 0" >
+			  and tradeNum = #{orders.tradeNum}
+			</if>
+			<if test="orders.tradeTotal != 0" >
+			  and tradeTotal = #{orders.tradeTotal}
+			</if>
+			<if test="orders.realSendTime != null" >
+			  and realSendTime = #{orders.realSendTime}
+			</if>
+			<if test="orders.isInvoice != 0" >
+			  and isInvoice = #{orders.isInvoice}
+			</if>
+		</where>
+		order by id desc
+		limit #{start},#{size}
+	</select>
+	
+	
+</mapper>

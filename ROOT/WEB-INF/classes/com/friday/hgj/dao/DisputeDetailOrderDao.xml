@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.DisputeDetailOrderDao">
+
+	<sql id="mainSql">
+		id,disputeId,driverIdea,driverAgree,dispauteCause,deduct,shipperOperTime,driverOperTime,operateTime,operateId
+	</sql>
+	
+	<insert id="insert" parameterType="DisputeDetail" useGeneratedKeys="true" keyProperty="id">
+		insert into dispute_detail(disputeId,driverIdea,driverAgree,dispauteCause,deduct,
+		shipperOperTime,driverOperTime,operateTime,operateId) 
+		values(#{disputeId},#{driverIdea},#{driverAgree},#{dispauteCause},#{deduct},
+		#{shipperOperTime},#{driverOperTime},now(),#{operateId})
+	</insert>
+	
+	<update id="updateDisputeDetailById" parameterType="DisputeDetail">
+		update dispute_detail
+		<set>
+			<if test="driverIdea != null and ''!=driverIdea">
+				driverIdea = #{driverIdea},
+			</if>
+			<if test="driverAgree != null and ''!=driverAgree">
+				driverAgree = #{driverAgree},
+			</if>
+			<if test="dispauteCause != null and ''!=dispauteCause">
+				dispauteCause = #{dispauteCause},
+			</if>
+			<if test="deduct != null and 0 !=deduct">
+				deduct = #{deduct},
+			</if>
+			<if test="shipperOperTime != null and ''!=shipperOperTime">
+				shipperOperTime = #{shipperOperTime},
+			</if>
+			<if test="driverOperTime != null and ''!=driverOperTime">
+				driverOperTime = now()
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<select id="selectDisputeDetailByDisputeId" parameterType="long" resultType="DisputeDetail">
+		select <include refid="mainSql"/> from dispute_detail where disputeId = #{disputeId}
+	</select>
+	
+	<select id="getDisputeDetailByDisputeIdAndLastId" parameterType="long" resultType="DisputeDetail">
+		select <include refid="mainSql"/> from dispute_detail where disputeId = #{disputeId} order by id desc limit 0,1
+	</select>
+	
+</mapper>

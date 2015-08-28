@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+    <context:component-scan base-package="com.friday.hgj.*"/>
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath*:c3p0.properties</value>
+                <value>classpath*:redis.properties</value>
+                <value>classpath*:ftp.properties</value>
+                <value>classpath*:sms.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <import resource="db.xml"/>
+    <import resource="freemarker.xml"/>
+    <import resource="redis.xml"/>
+    <!--<import resource="mail.xml"/>-->
+
+    <bean id="smsService" class="com.friday.hgj.services.SmsService">
+        <property name="SERVERADD" value="${smsHost}"/>
+        <property name="PORT" value="${smsPort}"/>
+    </bean>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+          p:defaultEncoding="utf-8">
+    </bean>
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**/*.htm"/>
+            <bean id="processMoniterInterceptor" class="com.friday.hgj.interceptor.ProcessMoniterInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**/*.htm"/>
+            <bean id="authInterceptor" class="com.friday.hgj.interceptor.AuthInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
+    <bean id="ftpTools" class="com.friday.hgj.tools.ftp.FtpTools">
+        <property name="HOST" value="${ftpHost}"/>
+        <property name="PORT" value="${ftpPort}"/>
+        <property name="LOGINNAME" value="${ftpLoginName}"/>
+        <property name="PASSWORD" value="${ftpPassword}"/>
+        <property name="defaultTimeoutSecond" value="${defaultTimeoutSecond}"/>
+        <property name="connectTimeoutSecond" value="${connectTimeoutSecond}"/>
+        <property name="dataTimeoutSecond" value="${dataTimeoutSecond}"/>
+    </bean>
+    
+    <bean id="apkFtpTools" class="com.friday.hgj.tools.ftp.ApkFtpTools">
+        <property name="APKFTP_HOST" value="${apkftphost}"/>
+        <property name="APKFTP_PORT" value="${apkftpport}"/>
+        <property name="APKFTP_LOGINNAME" value="${apkftploginname}"/>
+        <property name="APKFTP_PASSWORD" value="${apkftppassword}"/>
+        <property name="defaultTimeoutSecond" value="${defaultTimeoutSecond}"/>
+        <property name="connectTimeoutSecond" value="${connectTimeoutSecond}"/>
+        <property name="dataTimeoutSecond" value="${dataTimeoutSecond}"/>
+    </bean>
+
+    <bean id="imageCaptchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService">
+        <constructor-arg type="com.octo.captcha.service.captchastore.CaptchaStore" index="0">
+            <ref bean="fastHashMapCaptchaStore"/>
+        </constructor-arg>
+        <constructor-arg type="com.octo.captcha.engine.CaptchaEngine" index="1">
+            <ref bean="captchaEngineEx"/>
+        </constructor-arg>
+        <constructor-arg index="2">
+            <value>180</value>
+        </constructor-arg>
+        <constructor-arg index="3">
+            <value>100000</value>
+        </constructor-arg>
+        <constructor-arg index="4">
+            <value>75000</value>
+        </constructor-arg>
+    </bean>
+    <bean id="fastHashMapCaptchaStore"
+          class="com.octo.captcha.service.captchastore.FastHashMapCaptchaStore"/>
+
+    <bean id="captchaEngineEx"
+          class="com.friday.hgj.tools.CaptchaEngineEx"/>
+</beans>

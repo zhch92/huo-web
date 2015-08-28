@@ -1,0 +1,1120 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+a {
+  text-decoration: none;
+  color: #000;
+}
+li {
+  list-style: none;
+}
+body {
+  font-family: "Microsoft YaHei";
+  font-size: 12px;
+  background: #f3f3f3;
+}
+.clearfix {
+  zoom: 1;
+}
+.clearfix:after {
+  content: "";
+  height: 0;
+  display: block;
+  clear: both;
+}
+.header {
+  padding: 40px 0px 30px;
+}
+.header .head {
+  width: 1024px;
+  margin: 0 auto;
+}
+.content .main {
+  width: 1024px;
+  margin: 0 auto;
+}
+.content .main .lside {
+  width: 100px;
+  float: left;
+}
+.content .main .lside li {
+  height: 106px;
+  text-align: center;
+  position: relative;
+}
+.content .main .lside li a {
+  width: 80px;
+  height: 106px;
+  display: block;
+  margin: 0 auto;
+  border-bottom: 2px solid #c5c5c5;
+}
+.content .main .lside li .img_1 {
+  width: 101px;
+  height: 106px;
+  margin: 0 auto;
+  background: url(http://www.huo68.com:8089/statics/images/user.png) no-repeat 0px 0px;
+}
+.content .main .lside li .img_2 {
+  width: 101px;
+  height: 108px;
+  margin: 0 auto;
+  background: url(http://www.huo68.com:8089/statics/images/car.png) no-repeat 0px 0px;
+}
+.content .main .lside li .img_3 {
+  width: 101px;
+  height: 108px;
+  margin: 0 auto;
+  background: url(http://www.huo68.com:8089/statics/images/data.png) no-repeat 0px 0px;
+}
+.content .main .lside li .img_4 {
+  width: 101px;
+  height: 108px;
+  margin: 0 auto;
+  background: url(http://www.huo68.com:8089/statics/images/set.png) no-repeat 0px 0px;
+}
+.content .main .lside li .bg {
+  position: absolute;
+  width: 9px;
+  height: 106px;
+  left: 0;
+  top: 0;
+  background: url(http://www.huo68.com:8089/statics/images/lside.png) no-repeat;
+  display: none;
+}
+.content .main .lside li .text {
+  margin-top: 10px;
+}
+.content .main .lside .li_1 {
+  background: url(http://www.huo68.com:8089/statics/images/user.png) no-repeat 0px 0px;
+}
+.content .main .lside .li_2 {
+  background: url(http://www.huo68.com:8089/statics/images/car.png) no-repeat 0px 0px;
+}
+.content .main .lside .li_3 {
+  background: url(http://www.huo68.com:8089/statics/images/data.png) no-repeat 0px 0px;
+}
+.content .main .lside .li_4 {
+  background: url(http://www.huo68.com:8089/statics/images/center.png) no-repeat 0px 0px;
+}
+.content .main .lside .li_5 {
+  background: url(http://www.huo68.com:8089/statics/images/apk.png) no-repeat 0px 0px;
+}
+.content .main .lside .li_6 {
+  background: url(http://www.huo68.com:8089/statics/images/account.png) no-repeat 0px 0px;
+}
+.li_7 {
+  background: url(http://www.huo68.com:8089/statics/images/call_center.png) no-repeat 0px 0px;
+            }
+ .content .main .lside .li_8 {
+  background: url(http://192.168.2.50:8089/statics/images/out.png) no-repeat 0px 0px;
+}
+.content .main .lside .active {
+  background-position: 0px -108px !important;
+}
+.content .main .lside .active a {
+  border: 0;
+}
+.content .main .rside {
+  width: 924px;
+  float: left;
+}
+.content .main .rside .table {
+  padding: 25px 15px 20px 20px;
+  width: 890px;
+  background: #fff;
+  position: relative;
+  min-height: 780px;
+}
+.content .main .rside .table .back {
+  padding: 15px 0px;
+  color: #585858;
+  font-size: 12px;
+}
+.content .main .rside .table .back a {
+  float: right;
+  background: url(http://www.huo68.com:8089/statics/images/back.png) no-repeat;
+  width: 100px;
+  height: 29px;
+  display: block;
+  text-align: center;
+  line-height: 29px;
+  color: #fead4d;
+  position: relative;
+  top: -7px;
+  *top: -4px;
+}
+.content .main .rside .table .chose {
+  margin-bottom: 20px;
+}
+.content .main .rside .table .chose .chose_item {
+  float: left;
+}
+.content .main .rside .table .chose .chose_item li {
+  float: left;
+  width: 113px;
+  border: 1px solid #feb35a;
+  text-align: center;
+  height: 31px;
+  line-height: 33px;
+  font-size: 14px;
+}
+.content .main .rside .table .chose .chose_item li a {
+  color: #feb35a;
+  display: block;
+  width: 113px;
+  line-height: 33px;
+  font-size: 14px;
+  height: 31px;
+}
+.content .main .rside .table .chose .chose_item .l_side {
+  border-left: none;
+}
+.content .main .rside .table .chose .chose_active {
+  background: #feb35a;
+}
+.content .main .rside .table .chose .chose_active a {
+  color: #fff !important;
+}
+.content .main .rside .table .chose .nav {
+  float: right;
+  /*height: 33px;*/
+  width: 216px;
+  line-height: 31px;
+  font-size: 14px;
+  border: 1px solid #dcdcdc;
+}
+.content .main .rside .table .chose .nav .text {
+  height: 19px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  border: none;
+  padding-left: 12px;
+  width: 163px;
+  outline: none;
+  margin-bottom: 0px;
+}
+.content .main .rside .table .chose .nav .btn {
+  height: 33px;
+  width: 38px;
+  border: none;
+  outline: none;
+  background: url(http://www.huo68.com:8089/statics/images/search.png) no-repeat 0px 0px;
+}
+.content .main .rside .table .chose .nav .btn:link {
+  background-position: 0px 0px;
+}
+.content .main .rside .table .chose .nav .btn:visited {
+  background-position: 0px 0px;
+}
+.content .main .rside .table .chose .nav .btn:hover {
+  background-position: 0px -33px;
+}
+.content .main .rside .table .chose .nav .btn:active {
+  background-position: 0px -66px;
+}
+.content .main .rside .table p {
+  font-size: 14px;
+  color: #464646;
+  line-height: 30px;
+}
+.content .main .rside .table p span {
+  color: #898989;
+  margin-left: 20px;
+}
+.content .main .rside .table .text {
+  margin-bottom: 30px;
+}
+.content .main .rside .table .text textarea {
+  background: #f3f3f3;
+  line-height: 30px;
+  height: 180px;
+  font-size: 14px;
+  color: #585858;
+  width: 865px;
+  padding: 0 10px;
+  border:1px solid #ccc;
+}
+.content .main .rside .table .send {
+  text-align: right;
+}
+.content .main .rside .table .send button {
+  width: 100px;
+  height: 29px;
+  background: url(http://www.huo68.com:8089/statics/images/past.png) no-repeat;
+  border: none;
+  outline: none;
+  color: #fff;
+  margin-right: 2px;
+}
+.content .main .rside .table .site {
+  width: 354px;
+  margin-left: 80px;
+  padding-top: 9px;
+  float: left;
+}
+.content .main .rside .table .site li {
+  float: left;
+}
+.content .main .rside .table .site .inpt {
+  width: 185px;
+}
+.content .main .rside .table .site .inpt input {
+  width: 68px;
+  padding-left: 10px;
+  height: 22px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+.content .main .rside .table .site .time {
+  width: 140px;
+  line-height: 24px;
+  margin-left: 20px;
+  height: 22px;
+  border: 1px solid #ccc;
+  color: #c4c4c4;
+  padding-left: 7px;
+  background: url(http://www.huo68.com:8089/statics/images/time.png) no-repeat 128px 4px;
+}
+.content .main .rside .table .table_p table {
+  width: 890px;
+}
+.content .main .rside .table .table_p .state {
+  color: #feb35a;
+  margin-left: 20px;
+}
+.content .main .rside .table .table_p .state_1 {
+  color: #2d2d2d;
+}
+.content .main .rside .table .table_p .state_2 {
+  color: #ababab;
+}
+.content .main .rside .table .table_user table {
+  width: 890px;
+}
+.content .main .rside .table .table_user .state {
+  color: #feb35a;
+  margin-left: 20px;
+}
+.content .main .rside .table .table_user .state_1 {
+  color: #2d2d2d;
+}
+.content .main .rside .table .table_user .state_2 {
+  color: #ababab;
+}
+.content .main .rside .table table {
+  border: 1px solid #ccc;
+  text-align: center;
+  color: #585858;
+  font-size: 12px;
+  width: 890px;
+}
+.content .main .rside .table table thead {
+  background: #f3f3f3;
+}
+.content .main .rside .table table thead th {
+  line-height: 30px;
+  /*border-color: #ccc;*/
+  border-bottom: none;
+  border-right: none;
+  border: 1px solid #ccc;
+ *border-width: 0 1px 1px 0;
+}
+.content .main .rside .table table thead th span {
+  position: relative;
+  padding-right: 13px;
+}
+.content .main .rside .table table thead th span a {
+  position: absolute;
+  width: 10px;
+  height: 5px;
+  display: block;
+}
+.content .main .rside .table table thead th span .down_1 {
+  right: 0px;
+  top: 6px;
+  background: url(http://www.huo68.com:8089/statics/images/down.png) no-repeat;
+}
+.content .main .rside .table table thead th span .down {
+  right: 0;
+  top: 10px;
+  background: url(http://www.huo68.com:8089/statics/images/down.png) no-repeat;
+}
+.content .main .rside .table table thead th span .up {
+  right: 0;
+  top: 3px;
+  background: url(http://www.huo68.com:8089/statics/images/up.png) no-repeat;
+}
+.content .main .rside .table table td {
+  line-height: 30px;
+  border-color: #ccc;
+  *border-width: 0 1px 1px 0;
+
+}
+.content .main .rside .table table td a {
+  color: #feb35a;
+}
+.content .main .rside .table table td a span {
+  color: #585858;
+}
+.content .main .rside .table .data {
+  margin-top: 70px;
+  padding-bottom: 50px;
+}
+.content .main .rside .table .data h3 {
+  font-size: 30px;
+  margin-bottom: 75px;
+  font-weight: 400;
+}
+.content .main .rside .table .data .data_img {
+  height: 240px;
+}
+.content .main .rside .particulars {
+  padding: 3px 17px 50px;
+  background: #fff;
+  margin-top: 15px;
+  height: 795px;
+}
+.content .main .rside .particulars .title {
+  padding: 15px 0px;
+  color: #585858;
+  font-size: 12px;
+}
+.content .main .rside .particulars .title a {
+  float: right;
+  background: url(http://www.huo68.com:8089/statics/images/back.png) no-repeat;
+  width: 100px;
+  height: 29px;
+  display: block;
+  text-align: center;
+  line-height: 29px;
+  color: #fead4d;
+  position: relative;
+  top: -7px;
+  *top: -4px;
+}
+.content .main .rside .particulars .papers {
+  overflow: hidden;
+  position: relative;
+  margin-top: 27px;
+}
+.content .main .rside .particulars .papers ul {
+  position: relative;
+  width: 990px;
+  left: -50px;
+}
+.content .main .rside .particulars .papers ul li {
+  width: 230px;
+  margin: 0 50px;
+  float: left;
+}
+.content .main .rside .particulars .papers ul li .img {
+  border: 1px solid #ccc;
+  width: 228px;
+  height: 145px;
+  overflow: hidden;
+}
+.content .main .rside .particulars .papers ul li .img img {
+  width: 100%;
+  height: 100%;
+}  
+.content .main .rside .particulars .papers ul li .img .imgclick {
+cursor: pointer;
+} 
+
+.content .main .rside .particulars .papers ul li .state {
+  text-align: center;
+  line-height: 20px;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #313131;
+  font-weight: 600;
+}
+.content .main .rside .particulars .papers ul li .state span {
+  margin-left: 15px;
+  font-size: 14px;
+}
+.content .main .rside .particulars .papers ul li form {
+  margin-top: 20px;
+}
+.content .main .rside .particulars .papers ul li form label {
+  color: #979797;
+}
+.content .main .rside .particulars .papers ul li form label input {
+  width: 223px;
+  height: 20px;
+  padding-left: 5px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+}
+.content .main .rside .particulars .papers ul li form label .car_code {
+  width: 100px;
+}
+.content .main .rside .particulars .papers ul li .btn {
+  margin-top: 10px;
+}
+.content .main .rside .particulars .papers ul li .btn button {
+  width: 100px;
+  height: 29px;
+  outline: none;
+  border: none;
+}
+.content .main .rside .particulars .papers ul li .btn .back {
+  background: url(http://www.huo68.com:8089/statics/images/back.png) no-repeat;
+  color: #fead4d;
+  margin-right: 26px;
+}
+.content .main .rside .particulars .papers ul li .btn .past {
+  background: url(http://www.huo68.com:8089/statics/images/past.png) no-repeat;
+  color: #fff;
+}
+.content .main .rside .particulars .papers ul .business {
+  float: none;
+  margin: 0 auto 50px;
+}
+.content .main .rside .particulars .test {
+  margin-top: 30px;
+  width: 245px;
+}
+.content .main .rside .particulars .test li {
+  line-height: 25px;
+}
+.content .main .rside .particulars .test li input {
+  width: 158px;
+  padding-left: 10px;
+  line-height: 20px;
+  margin-left: 8px;
+}
+.content .main .rside .particulars .test .btn {
+  text-align: right;
+}
+.content .main .rside .particulars .test .btn a {
+  color: #ff9f2d;
+}
+.content .main .rside .record {
+  padding: 0px 15px 30px;
+  background: #fff;
+  margin-top: 15px;
+  min-height: 790px;
+}
+.content .main .rside .record .title {
+  padding: 15px 0px;
+  color: #585858;
+  font-size: 12px;
+  border-bottom: 1px dashed #cccccc;
+}
+.content .main .rside .record .title a {
+  float: right;
+  background: url(http://www.huo68.com:8089/statics/images/back.png) no-repeat;
+  width: 100px;
+  height: 29px;
+  display: block;
+  text-align: center;
+  line-height: 29px;
+  color: #fead4d;
+  position: relative;
+  top: -7px;
+  *top: -4px;
+}
+.content .main .rside .record .table_3 {
+  margin-top: 30px;
+  margin-bottom: 45px;
+  position: relative;
+}
+.content .main .rside .record .table_3 .table_l {
+  width: 230px;
+  float: left;
+}
+.content .main .rside .record .table_3 .table_l table {
+  margin-bottom: 10px;
+}
+.content .main .rside .record .table_3 .table_l table span {
+  font-size: 16px;
+  color: #1b1b1b;
+}
+.content .main .rside .record .table_3 .table_l table td {
+  line-height: 20px;
+}
+.content .main .rside .record .table_3 .table_l p {
+  line-height: 20px;
+  color: #727272;
+}
+.content .main .rside .record .table_3 .table_m {
+  width: 340px;
+  margin-left: 115px;
+  float: left;
+}
+.content .main .rside .record .table_3 .table_m p {
+  line-height: 20px;
+  color: #343434;
+}
+.content .main .rside .record .table_3 .table_m .price {
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: #343434;
+}
+.content .main .rside .record .table_3 .table_r {
+  width: 280px;
+  float: right;
+}
+.content .main .rside .record .table_3 .table_r table {
+  line-height: 20px;
+  color: #343434;
+}
+.content .main .rside .record .table_3 .bttn {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.content .main .rside .record .table_3 .bttn button {
+  width: 100px;
+  height: 29px;
+  outline: none;
+  border: none;
+  font-size: 14px;
+}
+.content .main .rside .record .table_3 .bttn .back {
+  background: url(http://www.huo68.com:8089/statics/images/back.png) no-repeat;
+  color: #fead4d;
+  margin-right: 26px;
+}
+.content .main .rside .record .table_3 .bttn .past {
+  background: url(http://www.huo68.com:8089/statics/images/past.png) no-repeat;
+  color: #fff;
+}
+.content .main .rside .record .detauls_table {
+  margin-top: 20px;
+}
+.content .main .rside .record .detauls_table table {
+  border: 1px solid #ccc;
+  text-align: center;
+  color: #585858;
+  font-size: 12px;
+}
+.content .main .rside .record .detauls_table table thead {
+  background: #f3f3f3;
+}
+.content .main .rside .record .detauls_table table thead th {
+  line-height: 30px;
+  border-color: #ccc;
+
+}
+.content .main .rside .record .detauls_table table thead th span {
+  position: relative;
+  padding-right: 13px;
+}
+.content .main .rside .record .detauls_table table thead th span a {
+  position: absolute;
+  width: 10px;
+  height: 5px;
+  display: block;
+}
+.content .main .rside .record .detauls_table table thead th span .down_1 {
+  right: 0px;
+  top: 6px;
+  background: url(http://www.huo68.com:8089/statics/images/down.png) no-repeat;
+}
+.content .main .rside .record .detauls_table table thead th span .down {
+  right: 0;
+  top: 10px;
+  background: url(http://www.huo68.com:8089/statics/images/down.png) no-repeat;
+}
+.content .main .rside .record .detauls_table table thead th span .up {
+  right: 0;
+  top: 3px;
+  background: url(http://www.huo68.com:8089/statics/images/up.png) no-repeat;
+}
+.content .main .rside .record .detauls_table table td {
+  line-height: 30px;
+}
+.content .main .rside .record .detauls_table table td a {
+  color: #ff9416;
+  margin-left: 3px;
+}
+.content .main .rside .record .detauls_table table td span {
+  color: #ffa236;
+}
+.content .main .rside .info {
+  background: #f9f9f9;
+  margin-top: 15px;
+}
+.content .main .rside .info ul {
+  padding: 25px 0px 30px 15px;
+}
+.content .main .rside .info ul li {
+  float: left;
+  line-height: 20px;
+}
+.content .main .rside .info ul li .unpast {
+  color: #ff9f2d;
+}
+.content .main .rside .info ul li b {
+  font-size: 16px;
+  color: #1b1b1b;
+  margin-right: 10px;
+}
+.content .main .rside .info ul li a {
+  color: #ff9f2d;
+}
+.content .main .rside .info ul .li_1 {
+  margin-left: 45px;
+  font-size: 14px;
+}
+
+.content .main .rside .info ul .li_1 a {
+  font-size: 12px;
+}
+.content .main .rside .info ul .li_2 {
+  margin-left: 50px;
+}
+.content .main .rside .info ul .li_3 {
+  margin-left: 25px;
+}
+.content .main .rside .info ul .li_4 {
+  margin-left: 120px;
+}
+.content .main .rside .info ul .li_5 {
+  margin-left: 125px;
+}
+.content .main .rside .info ul .li_6 {
+  /*margin-left: 125px;*/
+  width: 260px;
+  padding-left: 20px;
+  background: url(http://192.168.2.50:8089/statics/images/site.png) no-repeat 0px 0px;
+}
+.content .main .rside .info ul .li_7_add {
+ width:275px
+}
+.content .main .rside .info ul .li_7_add strong{
+  font-size: 24px;
+  color: #feb35a;
+}
+.content .main .rside .info ul .add_1 {
+  width: 275px;
+  font-size: 12px;
+  color: #f343434;
+  font-weight: 600;
+  margin-bottom: 10px;
+
+}
+.content .main .rside .info ul .add_2 {
+  width: 275px;
+  line-height: 20px;
+  margin-bottom: 10px;
+
+}
+.content .main .rside .info .ul_1 {
+  border-bottom: 1px dashed #dbdbdb;
+}
+.content .main .rside .account {
+  width: 890px;
+}
+.content .login {
+  width: 1024px;
+  margin: 0 auto;
+  background: url(http://www.huo68.com:8089/statics/images/login_body.png) no-repeat;
+  padding-top: 50px;
+  padding-bottom: 85px;
+}
+.content .login h3 {
+  font-size: 30px;
+  color: #332c2b;
+  font-weight: normal;
+  text-align: center;
+}
+.content .login .login_info {
+  width: 210px;
+  margin: 90px auto 0;
+}
+.content .login .login_info li {
+  margin-bottom: 25px;
+  line-height: 22px;
+}
+.content .login .login_info li input {
+  margin-left: 10px;
+  width: 130px;
+  height: 20px;
+  line-height: 20px;
+  border: 1px solid #d9d9d9;
+  padding-left: 9px;
+  padding-right: 10px;
+}
+.content .login .login_info .btn {
+  margin-top: 35px;
+}
+.content .login .login_info .btn a {
+  display: block;
+  float: right;
+  margin-right: 21px;
+  height: 29px;
+  width: 118px;
+  line-height: 29px;
+  text-align: center;
+  background: url(http://www.huo68.com:8089/statics/images/butn.png) no-repeat 0px 0px;
+  color: #fff;
+  border: none;
+  font-size: 14px;
+}
+.content .login .login_info .btn a:link {
+  background-position: 0px 0px;
+}
+.content .login .login_info .btn a:visited {
+  background-position: 0px 0px;
+}
+.content .login .login_info .btn a:hover {
+  background-position: 0px -29px;
+}
+.content .login .login_info .btn a:active {
+  background-position: 0px -58px;
+}
+.page {
+  margin-top: 15px;
+}
+.page ul {
+  float: right;
+}
+.page ul li {
+  float: left;
+  height: 25px;
+  width: 25px;
+  line-height: 25px;
+}
+.page ul a {
+  line-height: 25px;
+  display: block;
+  text-align: center;
+  font-size: 16px;
+}
+.page ul .active {
+  background: #323232;
+}
+.page ul .active a {
+  color: #fff;
+}
+.page ul .excessive {
+  background: url(http://www.huo68.com:8089/statics/images/page.png) no-repeat -105px 0px;
+}
+.page ul .home {
+  background: url(http://www.huo68.com:8089/statics/images/home.png) no-repeat 0px 0px;
+}
+.page ul .p_active {
+  background-position: 0px -25px !important;
+}
+.page ul .pgup {
+  background: url(http://www.huo68.com:8089/statics/images/pgup.png) no-repeat 0px 0px;
+  margin-right: 13px;
+  margin-left: 7px;
+}
+.page ul .end {
+  background: url(http://www.huo68.com:8089/statics/images/pgdn.png) no-repeat 0px 0px;
+}
+.page ul .pgdn {
+  background: url(http://www.huo68.com:8089/statics/images/end.png) no-repeat 0px 0px;
+  margin-left: 6px;
+}
+.footer {
+  padding: 28px 0px;
+  background: #f3f3f3;
+  margin-top: 120px;
+}
+.footer .foot {
+  width: 1024px;
+  margin: 0 auto;
+}
+.footer .foot p {
+  line-height: 15px;
+  text-align: center;
+}
+.footer .foot p img {
+  border: none;
+}
+.opacity-bg {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  background: #7c7c7c;
+  opacity: .6;
+  filter: alpha(opacity=60);
+}
+.lightbox {
+  z-index: 1000;
+  background: #fff;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+}
+.lightbox li {
+  float: left;
+  margin-right: 28px;
+}
+.lightbox .title {
+  font-size: 14px;
+  color: #4d4d4d;
+  margin-right: 45px;
+  font-weight: 600;
+  position: relative;
+  top: -3px;
+}
+.lightbox .last {
+  color: #feb35b;
+  margin-right: 0;
+}
+.lightbox .bttn {
+  margin-top: 30px;
+  text-align: right;
+}
+.lightbox .bttn button {
+  width: 100px;
+  height: 29px;
+  outline: none;
+  border: none;
+}
+.lightbox .bttn .back {
+  background: url(http://www.huo68.com:8089/statics/images/back.png) no-repeat;
+  color: #fead4d;
+  margin-right: 26px;
+}
+.lightbox .bttn .past {
+  background: url(http://www.huo68.com:8089/statics/images/past.png) no-repeat;
+  color: #fff;
+}
+.lightbox_1 {
+  width: 524px;
+  height: 220px;
+  padding: 15px;
+  margin-left: -272px;
+  margin-top: -125px;
+  display: none;
+}
+.lightbox_1 .parent {
+  position: relative;
+}
+.lightbox_1 .parent .text {
+  margin-top: 10px;
+  overflow: hidden;
+}
+.lightbox_1 .parent .text textarea {
+  padding: 10px;
+  height: 115px;
+  width: 500px;
+  border: 1px solid #bfbfbf;
+  outline: none;
+}
+.lightbox_1 .parent .child {
+  position: absolute;
+  z-index: 9999;
+  top: -15px;
+  left: -15px;
+  width: 524px;
+  height: 220px;
+  padding: 15px;
+  background: #fff;
+  display: none;
+}
+.lightbox_1 .parent .child .title {
+  font-size: 14px;
+  color: #727272;
+}
+.lightbox_1 .parent .child .text_show {
+  border: 1px solid #bfbfbf;
+  width: 494px;
+  height: 118px;
+  padding: 8px;
+  margin-top: 10px;
+}
+.lightbox_1 .parent .child .text_show p {
+  color: #a6a6a6;
+  font-size: 14px;
+}
+.lightbox_1 .parent .child .bttn {
+  margin-top: 10px;
+}
+.lightbox_1 .parent .child .bttn a {
+  background: url(http://www.huo68.com:8089/statics/images/back.png) no-repeat;
+  color: #fead4d;
+  float: right;
+  width: 100px;
+  display: block;
+  height: 29px;
+  margin-right: 24px;
+  text-align: center;
+  line-height: 29px;
+}
+tbody tr {
+  background-color: #fff;
+}
+tbody tr:hover {
+  background-color: #eeeeee;
+}
+.lightbox_2 {
+  display: none;
+  width: 382px;
+  padding: 20px 15px;
+  margin-left: -191px;
+  margin-top: -92px;
+}
+.lightbox_3 {
+  display: none;
+  width: 880px;
+  padding: 20px 15px;
+  margin-left: -440px;
+  margin-top: -300px;
+  background:rgba(161, 152, 152, 0);
+}
+.lightbox_2 .text {
+  margin-top: 10px;
+}
+.lightbox_2 .text textarea {
+  padding: 10px;
+  height: 115px;
+  width: 360px;
+  outline: none;
+  border-color: #ccc;
+}
+
+
+/*添加银行卡号*/
+.bank{
+  height: 25px;
+  background: #fff;
+  padding: 5px 0;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 30px;
+  color: #979797;
+}
+.bank  select{
+padding-left:  5px;
+margin-right: 20px;
+margin-left: 10px;
+border: 1px solid #ccc;
+border-radius: 2px;
+}
+.bank .bank_img_0{
+  padding-bottom: 1px;
+  line-height: 25px;
+  color: #000;
+  padding-left: 25px;
+ background: url(http://192.168.2.50:8089/statics/images/bank_0.png) no-repeat;
+}
+.bank .bank_img_1{
+  padding-bottom: 1px;
+  line-height: 25px;
+  color: #000;
+  padding-left: 25px;
+background: url(http://192.168.2.50:8089/statics/images/bank_1.png) no-repeat;
+}
+.bank .bank_img_2{
+  padding-bottom: 1px;
+  line-height: 25px;
+  color: #000;
+  padding-left: 25px;
+background: url(http://192.168.2.50:8089/statics/images/bank_2.png) no-repeat;
+}
+.bank .bank_img_3{
+  padding-bottom: 1px;
+  line-height: 25px;
+  color: #000;
+  padding-left: 25px;
+background: url(http://192.168.2.50:8089/statics/images/bank_3.png) no-repeat;
+}
+.bank .bank_img_4{
+  padding-bottom: 1px;
+  line-height: 25px;
+  color: #000;
+  padding-left: 25px;
+background: url(http://192.168.2.50:8089/statics/images/bank_4.png) no-repeat;
+}
+.bank .bank_img_5{
+  padding-bottom: 1px;
+  line-height: 25px;
+  color: #000;
+  padding-left: 25px;
+background: url(http://192.168.2.50:8089/statics/images/bank_5.png) no-repeat;
+}
+.bank .bank_img_6{
+  padding-bottom: 1px;
+  line-height: 25px;
+  color: #000;
+  padding-left: 25px;
+background: url(http://192.168.2.50:8089/statics/images/bank_6.png) no-repeat;
+}
+.bank .bank_img_7{
+  padding-bottom: 1px;
+  line-height: 25px;
+  color: #000;
+  padding-left: 50px;
+background: url(http://192.168.2.50:8089/statics/images/bank_7.png) no-repeat;
+}
+.bank .bank_img_8{
+  padding-bottom: 1px;
+  line-height: 25px;
+  color: #000;
+  padding-left: 25px;
+background: url(http://192.168.2.50:8089/statics/images/bank_8.png) no-repeat;
+}
+.bank .bank_img_9{
+  padding-bottom: 1px;
+  line-height: 25px;
+  color: #000;
+  padding-left: 43px;
+background: url(http://192.168.2.50:8089/statics/images/bank_9.png) no-repeat;
+}
+.bank .bank_img_10{
+  padding-bottom: 1px;
+  line-height: 25px;
+  color: #000;
+  padding-left: 30px;
+background: url(http://192.168.2.50:8089/statics/images/bank_10.png) no-repeat;
+}
+.bank .bank_img_11{
+  padding-bottom: 1px;
+  line-height: 25px;
+  color: #000;
+  padding-left: 25px;
+background: url(http://192.168.2.50:8089/statics/images/bank_11.png) no-repeat;
+}.bank .bank_img_12{
+  padding-bottom: 1px;
+  line-height: 25px;
+  color: #000;
+  padding-left: 25px;
+background: url(http://192.168.2.50:8089/statics/images/bank_12.png) no-repeat;
+}.bank .bank_img_13{
+  padding-bottom: 1px;
+  line-height: 25px;
+  color: #000;
+  padding-left: 36px;
+background: url(http://192.168.2.50:8089/statics/images/bank_13.png) no-repeat;
+}.bank .bank_img_14{
+  padding-bottom: 1px;
+  line-height: 25px;
+  color: #000;
+  padding-left: 25px;
+background: url(http://192.168.2.50:8089/statics/images/bank_14.png) no-repeat;
+}
+.bank input{
+  padding: 4px 5px ;
+  height: 12px;
+  width: 190px;
+  margin-left: 10px;
+  /*border-color: #f3f3f3;*/
+  /*border: 1px;*/
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+.bank button{
+  width: 100px;
+  height: 29px;
+  outline: none;
+  border: none;
+  background: url(http://www.huo68.com:8089/statics/images/past.png) no-repeat;
+  color: #fff;
+  margin-left: 30px;
+}
+

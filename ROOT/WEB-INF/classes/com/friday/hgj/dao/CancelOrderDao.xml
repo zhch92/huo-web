@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.CancelOrderDao">
+	
+	<insert id="insert" parameterType="CancelOrder">
+		insert into cancel_order(orderId,driverUserId,shipperUserId,cancellCause,remark,operateTime,operateId)
+		values(#{orderId},#{driverUserId},#{shipperUserId},#{cancellCause},#{remark},#{operateTime},#{operateId})
+	</insert>
+	
+	<update id="update" parameterType="CancelOrder">
+		update cancel_order
+		<set>
+			<if test="driverUserId &gt; 0">
+				driverUserId = #{driverUserId},
+			</if>
+			<if test="shipperUserId &gt; 0">
+				shipperUserId = #{shipperUserId},
+			</if>
+			<if test="remark != null &amp;&amp; remark != ''">
+				remark = #{remark},
+			</if>
+			<if test="operateId &gt; 0">
+				operateId = #{operateId},
+			</if>
+			<if test="operateTime != null">
+				operateTime = #{operateTime},
+			</if>
+			cancellCause = #{cancellCause}
+		</set>
+		where orderId = #{orderId}
+	</update>
+	
+</mapper>

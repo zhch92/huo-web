@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+    <util:map id="freemarkerSettings">
+        <entry key="template_update_delay" value="0"/>
+        <entry key="default_encoding" value="UTF-8"/>
+        <entry key="output_encoding" value="UTF-8"/>
+        <entry key="locale" value="zh_CN"/>
+        <entry key="classic_compatible" value="true"/>
+        <entry key="date_format" value="yyyy-MM-dd"/>
+        <entry key="time_format" value="HH:mm:ss"/>
+        <entry key="url_escaping_charset" value="UTF-8"/>
+        <entry key="number_format" value="0.##"/>
+        <entry key="datetime_format" value="yyyy-MM-dd HH:mm:ss"/>
+    </util:map>
+
+    <bean id="freemarkerConfig"
+          class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer"
+          p:templateLoaderPath="/WEB-INF/ftl/"
+          p:freemarkerSettings-ref="freemarkerSettings">
+        <property name="freemarkerVariables">
+            <map>
+                <entry key="dict" value-ref="dictService"/>
+                <entry key="menu" value-ref="menuService"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="viewResolverFtl"
+          class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
+          p:suffix=".ftl"
+          p:exposeRequestAttributes="true"
+          p:exposeSessionAttributes="true"
+          p:exposeSpringMacroHelpers="true"
+          p:contentType="text/html;charset=utf-8"
+          p:order="1"/>
+</beans>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.MatchOrderDao">
+     <insert id="insert" parameterType="com.friday.hgj.model.MatchOrder" useGeneratedKeys="true" keyProperty="matchOrder.id">
+		insert into match_order(userId,cargoId,recomTime,status,todealId) 
+		values(#{matchOrder.userId},#{matchOrder.cargoId},#{matchOrder.recomTime},#{matchOrder.status},#{matchOrder.todealId})
+	</insert>
+
+</mapper>

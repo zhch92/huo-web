@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.BankCardDao">
+	
+	<insert id="insert" parameterType="BankCard">
+		insert into bank_card(userId,bank,bankCard,cardName,bankAdd,bankType,status,operateTime,operateId,lastUpdateTime) 
+		values(#{userId},#{bank},#{bankCard},#{cardName},#{bankAdd},#{bankType},#{status},#{operateTime},#{operateId},#{lastUpdateTime})
+	</insert>
+	
+	<update id="update" parameterType="BankCard">
+		update bank_card
+		<set>
+			<if test="userId != 0">
+				userId = #{userId},
+			</if>
+			<if test="bank != null">
+				bank = #{bank},
+			</if>
+			<if test="bankCard != null">
+				bankCard = #{bankCard},
+			</if>
+			<if test="cardName != null">
+				cardName = #{cardName},
+			</if>
+			<if test="bankAdd != null">
+				bankAdd = #{bankAdd},
+			</if>
+			<if test="bankType != 0">
+				bankType = #{bankType},
+			</if>
+			<if test="status != 0">
+				status = #{status},
+			</if>
+			<if test="1==1">
+				operateTime = now(),
+			</if>
+			<if test="operateId != 0">
+				operateId = #{operateId},
+			</if>
+			<if test="1==1">
+				lastUpdateTime = now(),
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+</mapper>

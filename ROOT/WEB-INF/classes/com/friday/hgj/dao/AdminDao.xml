@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+        'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.AdminDao">
+	
+	<insert id="insert" parameterType="com.friday.hgj.model.Admin"
+	 	useGeneratedKeys="true" keyProperty="adminid" >
+	    insert into admin(username,password,realname,status,createtime) 
+	    values(#{username},#{password},#{realname},
+	    <![CDATA[ 1,now() ]]> )
+	</insert>
+	
+	<resultMap type="com.friday.hgj.model.Admin" id="personreSultMap">  
+        <id column="adminid" property="adminid"/>
+        <result column="username" property="username"/>
+        <result column="realname" property="realname"/>
+        <result column="password" property="password"/>
+        <result column="status" property="status"/>
+        <result column="createtime" property="createtime"/>
+        <collection property="systemfunctions" ofType="com.friday.hgj.model.Systemfunction" >
+            <id column="functionid" property="functionid"/>
+            <result column="funnctionurl" property="funnctionurl"/>
+            <result column="functionname" property="functionname"/>
+            <result column="functionparentid" property="functionparentid"/>
+        </collection>
+    </resultMap> 
+    
+    <sql id="forPage">
+            <!--status!=-1-->
+            <if test="null != username and username != '' ">
+                and username like CONCAT('%',#{username},'%')
+            </if>
+            <if	test="null != realname and realname != '' ">
+                and realname like CONCAT('%',#{realname},'%' ) 
+            </if>
+    </sql>
+
+    <select id="getAdminSum" resultType="java.lang.Long">
+        select count(*) from admin where 1=1 and status!=-1
+        <include refid="forPage"/>
+    </select>
+
+    <select id="listByPage" parameterType="map" resultMap="personreSultMap">
+--			select a.*,b.functionid from admin as a left join userfunction as b on b.adminid=a.adminid
+        select adminid, username, realname, ss.status, createtime, sf.functionid, functionname from (select a.*,b.functionid from admin as a left join userfunction as b on b.adminid=a.adminid) as ss left join systemfunction sf on ss.functionid=sf.functionid
+        where 1=1 and ss.status!=-1 <include refid="forPage"/>
+        order by adminid desc 
+      
+    </select>
+    
+    <select id="selectJurisdictionByAdminId" parameterType="long" resultType="Jurisdiction">
+        select sf.functionid, funnctionurl, functionname from (select a.*,b.functionid from admin as a left join userfunction as b on b.adminid=a.adminid) as ss left join systemfunction sf on ss.functionid=sf.functionid 
+        where adminid=#{adminId} order by sf.functionid
+    </select>
+      <select id="selectJuriByAdminIdAndSysName" parameterType="map" resultType="Jurisdiction">
+        select sf.functionid, funnctionurl, functionname from (select a.*,b.functionid from admin as a left join userfunction as b on b.adminid=a.adminid) as ss left join systemfunction sf on ss.functionid=sf.functionid 
+        where adminid=#{adminId} and functionname=#{functionname} order by sf.functionid
+    </select>
+       <select id="selectJuriByAdminIdAndSysUrl" parameterType="map" resultType="Jurisdiction">
+        select sf.functionid, funnctionurl, functionname from (select a.*,b.functionid from admin as a left join userfunction as b on b.adminid=a.adminid) as ss left join systemfunction sf on ss.functionid=sf.functionid 
+        where adminid=#{adminId} and funnctionurl=#{funnctionurl} order by sf.functionid
+    </select>
+</mapper>

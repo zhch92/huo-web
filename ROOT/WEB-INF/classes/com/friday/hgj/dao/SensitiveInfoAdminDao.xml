@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+        'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.SensitiveInfoAdminDao">
+
+	<insert id="insert" parameterType="com.friday.hgj.model.SensitiveInfoAdmin" useGeneratedKeys="true" keyProperty="id" >
+		insert into sensitiveinfo_admin(objId, operateType,operateId,operateTime,remark,operator)
+			values(#{objId},#{operateType},#{operateId},#{operateTime},#{remark},#{operator})
+	</insert>
+	
+  	<sql id="forPage">
+        <where>
+            <if test="operateType != null and operateType != '' and operateType != 0 " >
+                and operateType=#{operateType}
+            </if>
+            <if test="operator != null and operator != ''  " >
+                and operator like CONCAT('%',#{operator},'%')
+            </if>
+            <if test="startTime!=null and startTime!='' ">
+            	<![CDATA[
+                	and operateTime>=#{startTime}
+                ]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+            	<![CDATA[ 
+                	and date_format(operateTime,'%Y-%m-%d')<=#{endTime}
+                ]]>
+            </if>
+        </where>
+    </sql>
+	<select id="countPageNum" resultType="java.lang.Long">
+        select count(*) from sensitiveInfo_admin
+        <include refid="forPage"/>
+    </select>
+
+    <select id="listByPage" parameterType="map" resultType="com.friday.hgj.model.SensitiveInfoAdmin">
+        select * from sensitiveInfo_admin
+        <include refid="forPage"/>
+        order by id desc
+        limit #{start},#{pageSize}
+    </select>
+    
+	
+</mapper>

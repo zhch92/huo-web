@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.DefaultInfoDao">
+	
+	<insert id="insert" parameterType="DefaultInfo">
+		insert into default_info(
+				orderId,orderStatus,status,
+				cancelId,cancelMan,cancelPhone,cancelDeposit,
+				canceleId,canceleMan,cancelePhone,canceleDeposit,
+				choiceReason,dispose,operateTime,operateId,operator,creatTime,defaultType
+				)
+		values(#{orderId},#{orderStatus},#{status},
+			   #{cancelId},#{cancelMan},#{cancelPhone},#{cancelDeposit},
+			   #{canceleId},#{canceleMan},#{cancelePhone},#{canceleDeposit},
+			   #{choiceReason},#{dispose},#{operateTime},#{operateId},#{operator},now(),#{defaultType}
+			   )
+	</insert>
+	
+	<update id="updateDefaultInfoByAdmin" parameterType="DefaultInfo">
+		update default_info
+		<set>
+				choiceReason = #{choiceReason},
+				dispose = #{dispose},
+				status = #{status},
+				operateId = #{operateId},
+				operator = #{operator},
+				operateTime = now()
+		</set>
+		where id = #{id}
+	</update>
+	
+</mapper>

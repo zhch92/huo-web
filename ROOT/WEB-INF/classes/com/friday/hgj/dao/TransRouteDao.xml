@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.TransRouteDao">
+	
+	<insert id="insert" parameterType="TransRoute">
+		insert into trans_route(userId,startProvince,startCity,startCounty,
+			endProvince,endCity,endCounty,status,operateTime) 
+		values(#{userId},#{startProvince},#{startCity},#{startCounty},
+			#{endProvince},#{endCity},#{endCounty},#{status},#{operateTime})
+	</insert>
+	
+	<update id="update"  parameterType="TransRoute">
+		update trans_route
+		<set>
+			<if test="startProvince &gt; 0">
+				startProvince = #{startProvince},
+			</if>
+			<if test="startCity &gt; 0">
+				startCity = #{startCity},
+			</if>
+			<if test="startCounty &gt; 0">
+				startCounty = #{startCounty},
+			</if>
+			<if test="endProvince &gt; 0">
+				endProvince = #{endProvince},
+			</if>
+			<if test="endCity &gt; 0">
+				endCity = #{endCity},
+			</if>
+			<if test="endCounty &gt; 0">
+				endCounty = #{endCounty},
+			</if>
+			<if test="operateTime != null">
+				operateTime = #{operateTime},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+</mapper>

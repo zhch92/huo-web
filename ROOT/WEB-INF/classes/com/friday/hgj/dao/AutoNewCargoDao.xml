@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.AutoNewCargoDao">
+	
+	 <insert id="insert" parameterType="com.friday.hgj.model.AutoNewCargo"  useGeneratedKeys="true" keyProperty="id" >
+	    insert into autonewcargo (userId, isTodeal, taskTime, todealTime,todealId)
+	    values (#{userId}, #{isTodeal}, #{taskTime}, #{todealTime}, #{todealId})
+	 </insert>
+</mapper>

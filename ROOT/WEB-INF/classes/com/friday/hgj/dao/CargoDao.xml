@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd' >
+<mapper namespace="com.friday.hgj.dao.CargoDao">
+     <insert id="insert" parameterType="com.friday.hgj.model.Cargo" useGeneratedKeys="true" keyProperty="cargo.id">
+		insert into cargo(userId,cargoNo,cargoName,weight,square,tvratio,province,city,county,startAdd,linkName,linkPhone,sendTime,arrivalTime,arrivalProvince,
+		arrivalCity,arrivalCounty,arrivalAdd,carLength,carType,quote,quoteCompany,insuranceStatus,coverage,insurRate,shelve,
+		createTime,operateTime,operateId,chargeMode,remark) 
+		values(#{cargo.userId},#{cargo.cargoNo},#{cargo.cargoName},#{cargo.weight},#{cargo.square},#{cargo.tvratio},#{cargo.province},#{cargo.city},#{cargo.county},#{cargo.startAdd},#{cargo.linkName},#{cargo.linkPhone},#{cargo.sendTime},#{cargo.arrivalTime},
+		#{cargo.arrivalProvince},#{cargo.arrivalCity},#{cargo.arrivalCounty},#{cargo.arrivalAdd},#{cargo.carLength},#{cargo.carType},#{cargo.quote},#{cargo.quoteCompany},#{cargo.insuranceStatus},#{cargo.coverage},
+		#{cargo.insurRate},#{cargo.shelve},#{cargo.createTime},#{cargo.operateTime},#{cargo.operateId},#{cargo.chargeMode},#{cargo.remark})
+	</insert>
+	 <insert id="insertimport" parameterType="com.friday.hgj.model.Cargo" useGeneratedKeys="true" keyProperty="cargo.id">
+		insert into cargo(userId,cargoNo,cargoName,weight,square,tvratio,province,city,county,startAdd,linkName,linkPhone,sendTime,arrivalTime,arrivalProvince,
+		arrivalCity,arrivalCounty,arrivalAdd,carLength,carType,quote,quoteCompany,insuranceStatus,coverage,insurRate,shelve,
+		createTime,operateTime,operateId,chargeMode,remark,downShelveTime) 
+		values(#{cargo.userId},#{cargo.cargoNo},#{cargo.cargoName},#{cargo.weight},#{cargo.square},#{cargo.tvratio},#{cargo.province},#{cargo.city},#{cargo.county},#{cargo.startAdd},#{cargo.linkName},#{cargo.linkPhone},#{cargo.sendTime},#{cargo.arrivalTime},
+		#{cargo.arrivalProvince},#{cargo.arrivalCity},#{cargo.arrivalCounty},#{cargo.arrivalAdd},#{cargo.carLength},#{cargo.carType},#{cargo.quote},#{cargo.quoteCompany},#{cargo.insuranceStatus},#{cargo.coverage},
+		#{cargo.insurRate},#{cargo.shelve},#{cargo.createTime},#{cargo.operateTime},#{cargo.operateId},#{cargo.chargeMode},#{cargo.remark},#{cargo.downShelveTime})
+	</insert>
+
+	<sql id="cargoListQuery">
+		<where>
+			<if test="companyName != null &amp;&amp; companyName != ''">
+				and (c_i.companyName like CONCAT('%',#{companyName},'%')
+					or s_c.companyName like CONCAT('%',#{companyName},'%'))
+			</if>
+			<if test="startAdd != null &amp;&amp; startAdd != ''">
+				and c.startAdd like CONCAT('%',#{startAdd},'%')
+			</if>
+			<if test="arrivalAdd != null &amp;&amp; arrivalAdd != ''">
+				and c.arrivalAdd like CONCAT('%',#{arrivalAdd},'%')
+			</if>
+			<if test="startUpShelveTime != null">
+				and c.upShelveTime >= #{startUpShelveTime}
+			</if>
+			<if test="endUpShelveTime != null">
+				and #{endUpShelveTime} >= c.upShelveTime
+			</if>
+			<if test="chargeMode != null">
+				and c.chargeMode = #{chargeMode}
+			</if>
+			<if test="quoteCompany != null">
+				and c.quoteCompany = #{quoteCompany}
+				<if test="countType != null">
+					<if test="quoteCompany == 1">
+						<if test="countType == 11">
+							and c.square >= 0 and 20 >= c.square
+						</if>
+						<if test="countType == 12">
+							and c.square > 20 and 50 >= c.square		
+						</if>
+						<if test="countType == 13">
+							and c.square > 50 and 80 >= c.square
+						</if>
+						<if test="countType == 14">
+							and c.square > 80
+						</if>
+					</if>
+					<if test="quoteCompany == 2">
+						<if test="countType == 21">
+							and c.weight >= 0 and 5 >= c.weight
+						</if>
+						<if test="countType == 22">
+							and c.weight > 5 and 10 >= c.weight
+						</if>
+						<if test="countType == 23">
+							and c.weight > 10 and 20 >= c.weight
+						</if>
+						<if test="countType == 24">
+							and c.weight > 20 and 30 >= c.weight
+						</if>
+						<if test="countType == 25">
+							and c.weight > 30
+						</if>
+					</if>
+				</if>
+			</if>
+			<if test="shelve != null">
+				and c.shelve=#{shelve}
+			</if>
+		</where>
+	</sql>
+	<select id="selectCargoListCount" parameterType="java.util.Map" resultType="int">
+		select count(*) from cargo c
+		left join company_info c_i on c.userId = c_i.userId
+		left join special_company s_c on c.userId = s_c.userId
+		<include refid="cargoListQuery"/>
+	</select>
+	
+	  <select id="getOrdertradecomplaints" parameterType="map" resultType="com.friday.hgj.model.Orders">
+      select * from orders where status=100 and (dispute=1 or dispute=2 or dispute=5 or dispute=6)
+        order by operateTime desc
+        limit #{start},#{pageSize}
+    </select>
+	
+	<select id="selectCargoList" parameterType="java.util.Map" resultType="com.friday.hgj.model.Cargo">
+		select * from cargo c
+		left join company_info c_i on c.userId = c_i.userId
+		left join special_company s_c on c.userId = s_c.userId
+		<include refid="cargoListQuery"/>
+		order by 
+		<if test="sendTimeCountDownOrder != null">
+			 <if test="sendTimeCountDownOrder == 1">c.sendTime,</if>
+			 <if test="sendTimeCountDownOrder == 2">c.sendTime desc,</if>
+		</if>
+		c.sendTime desc
+		limit #{start},#{size}
+	</select>
+	 <select id="selectBackCargoList"  resultType="Cargo">
+        select * from cargo
+        <where>
+            shelve = 1
+            <if test="sendTime != null">
+                and sendTime >= #{sendTime}
+            </if>
+            <if test="arrivalCity != null">
+                and city like CONCAT('%',#{arrivalCity},'%')
+            </if>
+        </where>
+       order by sendTime asc
+    </select>
+	
+	<update id="updateCargoShelve" parameterType="Cargo">
+        update cargo
+        <set>
+            <if test="shelve != 0">
+                shelve = #{shelve},
+            </if>
+            <if test="operateTime != null">
+                operateTime = #{operateTime},
+            </if>
+            <if test="operateId != null">
+                operateId = #{operateId},
+            </if>
+            <if test="sendTime != null">
+            	sendTime = #{sendTime},
+            </if>
+            <if test="arrivalTime != null">
+            	arrivalTime = #{arrivalTime},
+            </if>
+            <if test="upShelveTime != null">
+            	upShelveTime = #{upShelveTime},
+            </if>
+            <if test="downShelveTime != null">
+            	downShelveTime = #{downShelveTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+	
+</mapper>
